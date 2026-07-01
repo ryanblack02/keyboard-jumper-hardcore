@@ -1,6 +1,6 @@
 // ===============================
 // NEON HARDCORE KEYBOARD JUMPER
-// ARCADE LEVEL 2 (FINAL UPGRADE)
+// FINAL POLISH PASS (ULTIMATE)
 // ===============================
 
 // DOM
@@ -9,36 +9,35 @@ const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
 
-// Game state
+// STATE
 let wordPools = null;
 let currentWord = "";
 let typed = "";
 let gameOver = false;
-
-// combo system (SESSION ONLY)
 let combo = 0;
 
 // -------------------------------
-// AUDIO (no files needed)
+// AUDIO ENGINE (light + responsive)
 // -------------------------------
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-function beep(freq, duration = 0.05, volume = 0.05) {
+function beep(freq, duration = 0.04, volume = 0.04) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
+    osc.type = "square";
     osc.frequency.value = freq;
     gain.gain.value = volume;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
 
     osc.start();
     osc.stop(audioCtx.currentTime + duration);
 }
 
 // -------------------------------
-// Load words.json
+// LOAD WORDS
 // -------------------------------
 fetch("words.json")
     .then(res => res.json())
@@ -46,20 +45,21 @@ fetch("words.json")
         wordPools = data;
         startGame();
     })
-    .catch(err => {
-        statusEl.textContent = "Failed to load words.json";
-        console.error(err);
+    .catch(() => {
+        statusEl.textContent = "Error loading word system";
     });
 
 // -------------------------------
-// Utility
+// UTIL
 // -------------------------------
-function pick(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+function isBoss(word) {
+    return wordPools.boss.includes(word);
 }
 
 // -------------------------------
-// Word system
+// WORD SYSTEM
 // -------------------------------
 function getRandomWord() {
     const roll = Math.random();
@@ -69,13 +69,8 @@ function getRandomWord() {
     return pick(wordPools.boss);
 }
 
-// detect boss word
-function isBossWord(word) {
-    return wordPools.boss.includes(word);
-}
-
 // -------------------------------
-// Game start
+// GAME START
 // -------------------------------
 function startGame() {
     gameOver = false;
@@ -90,31 +85,37 @@ function startGame() {
 }
 
 // -------------------------------
-// End game
+// GAME OVER
 // -------------------------------
 function endGame() {
     gameOver = true;
+
     statusEl.textContent = `💀 SYSTEM FAILURE — Combo: ${combo} — Press Enter`;
 
     combo = 0;
 
-    triggerShake();
-    beep(120, 0.2, 0.1); // death sound
+    shake();
+    beep(90, 0.2, 0.08);
 }
 
 // -------------------------------
-// Screen shake
+// VISUAL SHAKE
 // -------------------------------
-function triggerShake() {
+function shake() {
     gameEl.classList.add("shake");
-
-    setTimeout(() => {
-        gameEl.classList.remove("shake");
-    }, 300);
+    setTimeout(() => gameEl.classList.remove("shake"), 300);
 }
 
 // -------------------------------
-// Next word
+// WORD TRANSITION FEEL
+// -------------------------------
+function flashWord() {
+    wordEl.classList.add("glow");
+    setTimeout(() => wordEl.classList.remove("glow"), 120);
+}
+
+// -------------------------------
+// NEXT WORD
 // -------------------------------
 function nextWord() {
     currentWord = getRandomWord();
@@ -124,49 +125,47 @@ function nextWord() {
     inputEl.value = "";
     inputEl.focus();
 
-    // boss warning effect
-    if (isBossWord(currentWord)) {
-        statusEl.textContent = "⚠ BOSS WORD DETECTED";
-        beep(300, 0.08, 0.04);
+    flashWord();
+
+    if (isBoss(currentWord)) {
+        statusEl.textContent = "⚠ BOSS WORD";
+        beep(320, 0.08, 0.05);
     } else {
-        statusEl.textContent = "Keep going...";
+        statusEl.textContent = combo > 0 ? `Combo: ${combo}` : "Keep going...";
     }
 }
 
 // -------------------------------
-// Typing logic
+// INPUT LOGIC
 // -------------------------------
 inputEl.addEventListener("input", () => {
     if (gameOver || !wordPools) return;
 
     typed = inputEl.value;
 
-    // glow feedback
-    wordEl.classList.add("glow");
-    setTimeout(() => wordEl.classList.remove("glow"), 120);
+    flashWord();
 
-    // FAIL
+    // FAIL CONDITION
     if (!currentWord.startsWith(typed)) {
         endGame();
         return;
     }
 
-    // SUCCESS
+    // SUCCESS CONDITION
     if (typed === currentWord) {
         combo++;
 
-        // combo feedback intensity
-        const pitch = 200 + combo * 15;
-        beep(pitch, 0.05, 0.03);
+        const pitch = 180 + combo * 12;
+        beep(pitch, 0.03, 0.03);
 
-        statusEl.textContent = `✔ ${combo} combo!`;
+        statusEl.textContent = `✔ ${combo} combo`;
 
-        setTimeout(nextWord, 150);
+        setTimeout(nextWord, 120);
     }
 });
 
 // -------------------------------
-// Restart
+// RESTART
 // -------------------------------
 document.addEventListener("keydown", (e) => {
     if (gameOver && e.key === "Enter") {
