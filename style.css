@@ -7,9 +7,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-.container {
     text-align: center;
 }
 
@@ -18,40 +15,25 @@ h1 {
     text-shadow: 0 0 15px #ff00ff;
 }
 
-.sub {
-    color: #00fff7;
-    opacity: 0.8;
-}
-
-#gameBox {
-    margin-top: 20px;
-    padding: 30px;
-    border: 2px solid #00fff7;
-    box-shadow: 0 0 20px #00fff7;
-    border-radius: 10px;
-}
-
 #word {
     font-size: 32px;
     text-shadow: 0 0 15px #00fff7;
+    margin: 20px 0;
 }
 
 input {
-    margin-top: 15px;
     padding: 10px;
     font-size: 18px;
-    width: 250px;
-    border: none;
-    outline: none;
+    width: 260px;
     text-align: center;
+    border: 1px solid #00fff7;
     background: black;
     color: #00fff7;
-    border: 1px solid #00fff7;
     box-shadow: 0 0 10px #00fff7;
+    outline: none;
 }
 
 #status {
     margin-top: 15px;
-    font-size: 14px;
     opacity: 0.8;
 }
