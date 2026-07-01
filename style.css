@@ -1,32 +1,46 @@
+/* ===============================
+   BASE LAYOUT
+=============================== */
+
 body {
     margin: 0;
     background: radial-gradient(circle at center, #0a0a0a, #000);
     font-family: monospace;
     color: #00fff7;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
-/* GAME CONTAINER */
-#game {
+/* APP WRAPPER */
+#app {
     text-align: center;
 }
 
-/* TITLE */
-h1 {
+/* ===============================
+   TITLE
+=============================== */
+
+.title {
     color: #ff00ff;
     text-shadow: 0 0 15px #ff00ff;
 }
 
-/* WORD */
+/* ===============================
+   WORD DISPLAY
+=============================== */
+
 #word {
-    font-size: 36px;
+    font-size: 40px;
     text-shadow: 0 0 15px #00fff7;
+    margin: 10px 0;
 }
 
-/* INPUT */
+/* ===============================
+   INPUT
+=============================== */
+
 input {
     margin-top: 10px;
     padding: 10px;
@@ -37,9 +51,13 @@ input {
     color: #00fff7;
     text-align: center;
     box-shadow: 0 0 10px #00fff7;
+    outline: none;
 }
 
-/* DASHBOARD */
+/* ===============================
+   DASHBOARD
+=============================== */
+
 #dashboard {
     margin-top: 20px;
     display: flex;
@@ -58,14 +76,24 @@ canvas {
     height: 120px;
     border: 1px solid #00fff7;
     box-shadow: 0 0 10px #00fff7;
+    background: rgba(0,0,0,0.4);
 }
 
-/* WEAK WORD PANEL */
+/* ===============================
+   WEAK WORD PANEL
+=============================== */
+
 #weakPanel {
-    margin-top: 20px;
+    margin-top: 15px;
     border: 1px solid #ff00ff;
     padding: 10px;
     box-shadow: 0 0 10px #ff00ff;
+    display: inline-block;
+    min-width: 250px;
+}
+
+#weakPanel h3 {
+    margin: 5px 0;
 }
 
 #weakList {
@@ -77,4 +105,70 @@ canvas {
 #weakList li {
     color: #ff00ff;
     font-size: 14px;
+    margin: 3px 0;
+}
+
+/* ===============================
+   SESSION REPORT OVERLAY
+=============================== */
+
+.hidden {
+    display: none;
+}
+
+#report {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* REPORT BOX */
+#reportBox {
+    width: 340px;
+    padding: 20px;
+    border: 1px solid #00fff7;
+    box-shadow: 0 0 20px #00fff7;
+    background: rgba(0,0,0,0.95);
+    text-align: center;
+}
+
+#reportBox h2 {
+    color: #ff00ff;
+    margin-bottom: 10px;
+}
+
+/* WEAK WORDS */
+#reportWeak {
+    margin-top: 10px;
+    border-top: 1px solid #00fff7;
+    padding-top: 10px;
+}
+
+#reportWeak ul {
+    list-style: none;
+    padding: 0;
+}
+
+#reportWeak li {
+    color: #ff00ff;
+    font-size: 14px;
+    margin: 3px 0;
+}
+
+/* RESTART BUTTON */
+#restartBtn {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: black;
+    border: 1px solid #00fff7;
+    color: #00fff7;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#restartBtn:hover {
+    box-shadow: 0 0 10px #00fff7;
 }
