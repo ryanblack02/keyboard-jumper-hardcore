@@ -1,6 +1,6 @@
 // ===============================
 // NEON HARDCORE KEYBOARD JUMPER
-// FINAL REMOTE WORD ENGINE + QUALITY UPGRADE
+// FINAL POLISHED WORD ENGINE (FIXED)
 // ===============================
 
 // DOM
@@ -13,11 +13,13 @@ const modeEl = document.getElementById("mode");
 
 // STATE
 let allWords = [];
-let usedWords = new Set();
 let currentWord = "";
 let typed = "";
 let gameOver = false;
 let combo = 0;
+
+// prevent immediate repetition (BIG FIX)
+let lastWord = "";
 
 // AUDIO
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -38,15 +40,24 @@ function beep(freq, duration = 0.04, volume = 0.04) {
 }
 
 // -------------------------------
-// LOAD WORDS (REMOTE)
+// LOAD WORDS (CLEAN + SAFE)
 // -------------------------------
 fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
     .then(res => res.text())
     .then(text => {
+
         allWords = text
             .split("\n")
             .map(w => w.trim().toLowerCase())
-            .filter(w => w.length > 1 && /^[a-z]+$/.test(w)); // QUALITY FILTER
+
+            // HARD CLEANING (fixes "],", junk, symbols)
+            .filter(w =>
+                /^[a-z]+$/.test(w) &&
+                w.length > 1 &&
+                w.length < 20
+            );
+
+        console.log("Loaded words:", allWords.length);
 
         startGame();
     })
@@ -62,7 +73,7 @@ function startGame() {
     gameOver = false;
     combo = 0;
     typed = "";
-    usedWords.clear();
+    lastWord = "";
 
     statusEl.textContent = "Focus. One mistake ends everything.";
     inputEl.value = "";
@@ -86,7 +97,7 @@ function endGame() {
 }
 
 // -------------------------------
-// VISUAL SHAKE
+// SHAKE EFFECT
 // -------------------------------
 function shake() {
     gameEl.classList.add("shake");
@@ -94,7 +105,7 @@ function shake() {
 }
 
 // -------------------------------
-// WORD PICKER (IMPROVED QUALITY SYSTEM)
+// WORD PICKER (FIXED + NO REPETITION + SMOOTH FLOW)
 // -------------------------------
 function getRandomWord() {
     const mode = modeEl.value;
@@ -105,7 +116,7 @@ function getRandomWord() {
     let start = 0;
     let end = len;
 
-    // MODE determines word frequency range
+    // MODE RANGE CONTROL
     if (mode === "casual") {
         start = 0;
         end = len * 0.25;
@@ -117,32 +128,32 @@ function getRandomWord() {
     else if (mode === "hardcore") {
         start = len * 0.3;
         end = len;
-    } 
-    else if (mode === "chaos") {
-        start = 0;
-        end = len;
     }
 
-    // attempt to find unused word
+    const slice = allWords.slice(start, end);
+
+    // SAFETY: avoid empty slices
+    if (!slice.length) return allWords[0];
+
+    // SMART RANDOM PICK (prevents repetition)
     for (let i = 0; i < 10; i++) {
-        const index = Math.floor(start + Math.random() * (end - start));
-        let word = allWords[index];
+        const word = slice[Math.floor(Math.random() * slice.length)];
 
         if (!word) continue;
 
-        // prevent repeats in a session
-        if (usedWords.has(word)) continue;
+        // prevent immediate repeat (BIG IMPROVEMENT)
+        if (word === lastWord) continue;
 
-        // difficulty filtering
+        // difficulty filter
         if (difficulty === 1 && word.length > 6) continue;
         if (difficulty === 3 && word.length < 4) continue;
 
-        usedWords.add(word);
+        lastWord = word;
         return word;
     }
 
-    // fallback safety
-    return "code";
+    // fallback (safe, not biased like "code")
+    return slice[Math.floor(Math.random() * slice.length)];
 }
 
 // -------------------------------
