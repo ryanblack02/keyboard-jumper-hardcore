@@ -1,6 +1,6 @@
 // ===============================
 // NEON HARDCORE KEYBOARD JUMPER
-// 10K WORD SYSTEM UPGRADE
+// FINAL REMOTE WORD ENGINE + QUALITY UPGRADE
 // ===============================
 
 // DOM
@@ -8,9 +8,12 @@ const gameEl = document.getElementById("game");
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
+const difficultyEl = document.getElementById("difficulty");
+const modeEl = document.getElementById("mode");
 
 // STATE
 let allWords = [];
+let usedWords = new Set();
 let currentWord = "";
 let typed = "";
 let gameOver = false;
@@ -35,54 +38,22 @@ function beep(freq, duration = 0.04, volume = 0.04) {
 }
 
 // -------------------------------
-// LOAD 10K WORD LIST
+// LOAD WORDS (REMOTE)
 // -------------------------------
-fetch("words.txt")
+fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
     .then(res => res.text())
     .then(text => {
         allWords = text
             .split("\n")
-            .map(w => w.trim())
-            .filter(w => w.length > 1);
+            .map(w => w.trim().toLowerCase())
+            .filter(w => w.length > 1 && /^[a-z]+$/.test(w)); // QUALITY FILTER
 
         startGame();
     })
     .catch(err => {
-        statusEl.textContent = "Failed to load words.txt";
+        statusEl.textContent = "Failed to load word list";
         console.error(err);
     });
-
-// -------------------------------
-// PICK WORD (SMART FILTERING)
-// -------------------------------
-function getRandomWord() {
-    let word = "";
-
-    // try a few times to avoid empty junk
-    for (let i = 0; i < 5; i++) {
-        const candidate = allWords[Math.floor(Math.random() * allWords.length)];
-
-        if (!candidate) continue;
-
-        // lightweight difficulty feel
-        if (combo < 10 && candidate.length <= 6) {
-            word = candidate;
-            break;
-        }
-
-        if (combo >= 10 && combo < 25 && candidate.length <= 10) {
-            word = candidate;
-            break;
-        }
-
-        if (combo >= 25) {
-            word = candidate;
-            break;
-        }
-    }
-
-    return word || "code";
-}
 
 // -------------------------------
 // START GAME
@@ -91,6 +62,7 @@ function startGame() {
     gameOver = false;
     combo = 0;
     typed = "";
+    usedWords.clear();
 
     statusEl.textContent = "Focus. One mistake ends everything.";
     inputEl.value = "";
@@ -114,11 +86,63 @@ function endGame() {
 }
 
 // -------------------------------
-// SHAKE EFFECT
+// VISUAL SHAKE
 // -------------------------------
 function shake() {
     gameEl.classList.add("shake");
     setTimeout(() => gameEl.classList.remove("shake"), 300);
+}
+
+// -------------------------------
+// WORD PICKER (IMPROVED QUALITY SYSTEM)
+// -------------------------------
+function getRandomWord() {
+    const mode = modeEl.value;
+    const difficulty = Number(difficultyEl.value);
+
+    const len = allWords.length;
+
+    let start = 0;
+    let end = len;
+
+    // MODE determines word frequency range
+    if (mode === "casual") {
+        start = 0;
+        end = len * 0.25;
+    } 
+    else if (mode === "standard") {
+        start = len * 0.1;
+        end = len * 0.7;
+    } 
+    else if (mode === "hardcore") {
+        start = len * 0.3;
+        end = len;
+    } 
+    else if (mode === "chaos") {
+        start = 0;
+        end = len;
+    }
+
+    // attempt to find unused word
+    for (let i = 0; i < 10; i++) {
+        const index = Math.floor(start + Math.random() * (end - start));
+        let word = allWords[index];
+
+        if (!word) continue;
+
+        // prevent repeats in a session
+        if (usedWords.has(word)) continue;
+
+        // difficulty filtering
+        if (difficulty === 1 && word.length > 6) continue;
+        if (difficulty === 3 && word.length < 4) continue;
+
+        usedWords.add(word);
+        return word;
+    }
+
+    // fallback safety
+    return "code";
 }
 
 // -------------------------------
@@ -134,7 +158,8 @@ function nextWord() {
 
     flash();
 
-    statusEl.textContent = combo > 0 ? `Combo: ${combo}` : "Keep going...";
+    statusEl.textContent =
+        combo > 0 ? `Combo: ${combo}` : "Keep going...";
 }
 
 // -------------------------------
