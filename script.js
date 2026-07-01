@@ -1,9 +1,10 @@
 // ===============================
 // NEON HARDCORE KEYBOARD JUMPER
-// PHASE 2 - DATA DRIVEN ENGINE
+// PHASE 3 - NEON POLISH VERSION
 // ===============================
 
 // DOM elements
+const gameEl = document.getElementById("game");
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
@@ -29,7 +30,14 @@ fetch("words.json")
     });
 
 // -------------------------------
-// Pick random word (tier system)
+// Utility: pick random item
+// -------------------------------
+function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// -------------------------------
+// Get word by difficulty tier
 // -------------------------------
 function getRandomWord() {
     const roll = Math.random();
@@ -45,20 +53,17 @@ function getRandomWord() {
     }
 }
 
-// helper
-function pick(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-}
-
 // -------------------------------
 // Start / restart game
 // -------------------------------
 function startGame() {
     gameOver = false;
     typed = "";
+
     nextWord();
 
     statusEl.textContent = "Focus. One mistake ends everything.";
+    inputEl.value = "";
     inputEl.focus();
 }
 
@@ -67,7 +72,20 @@ function startGame() {
 // -------------------------------
 function endGame() {
     gameOver = true;
-    statusEl.textContent = "💀 GAME OVER — Press Enter to restart";
+    statusEl.textContent = "💀 SYSTEM FAILURE — Press Enter to restart";
+
+    triggerShake();
+}
+
+// -------------------------------
+// Screen shake effect
+// -------------------------------
+function triggerShake() {
+    gameEl.classList.add("shake");
+
+    setTimeout(() => {
+        gameEl.classList.remove("shake");
+    }, 300);
 }
 
 // -------------------------------
@@ -83,23 +101,28 @@ function nextWord() {
 }
 
 // -------------------------------
-// Typing logic (core gameplay)
+// Typing system (core gameplay)
 // -------------------------------
 inputEl.addEventListener("input", () => {
     if (gameOver || !wordPools) return;
 
     typed = inputEl.value;
 
-    // instant fail
+    // neon glow feedback
+    wordEl.classList.add("glow");
+    setTimeout(() => wordEl.classList.remove("glow"), 120);
+
+    // fail condition
     if (!currentWord.startsWith(typed)) {
         endGame();
         return;
     }
 
-    // success
+    // success condition
     if (typed === currentWord) {
-        statusEl.textContent = "✔ Correct!";
-        setTimeout(nextWord, 200);
+        statusEl.textContent = "✔ PERFECT";
+
+        setTimeout(nextWord, 180);
     }
 });
 
