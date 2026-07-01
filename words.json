@@ -1,0 +1,22 @@
+{
+  "easy": [
+    "neon", "glow", "jump", "code", "react",
+    "pulse", "game", "type", "arcade", "focus",
+    "shift", "click", "key", "flow", "grid"
+  ],
+
+  "medium": [
+    "matrix", "vector", "cyber", "signal", "system",
+    "object", "function", "variable", "module", "browser",
+    "runtime", "compile", "keyboard", "engine", "logic"
+  ],
+
+  "boss": [
+    "synchronization",
+    "architecture",
+    "implementation",
+    "optimization",
+    "configuration",
+    "parallelization"
+  ]
+}
