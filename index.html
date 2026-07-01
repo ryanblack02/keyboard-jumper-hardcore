@@ -10,35 +10,61 @@
 
 <body>
 
-<div id="game">
+<div id="app">
 
-    <h1>Neon Typing Hardcore</h1>
+    <!-- MAIN GAME -->
+    <div id="game">
 
-    <p id="status">Loading...</p>
+        <h1 class="title">Neon Typing Hardcore</h1>
 
-    <h2 id="word">---</h2>
+        <p id="status">Loading...</p>
 
-    <input id="input" type="text" autocomplete="off" autofocus />
+        <h2 id="word">---</h2>
 
-    <!-- 📊 DASHBOARD -->
-    <div id="dashboard">
-        <div class="panel">
-            <canvas id="wpmChart"></canvas>
-            <p>WPM</p>
+        <input id="input" type="text" autocomplete="off" autofocus />
+
+        <!-- DASHBOARD -->
+        <div id="dashboard">
+
+            <div class="panel">
+                <canvas id="wpmChart"></canvas>
+                <p>WPM</p>
+            </div>
+
+            <div class="panel">
+                <canvas id="accChart"></canvas>
+                <p>Accuracy</p>
+            </div>
+
         </div>
 
-        <div class="panel">
-            <canvas id="accChart"></canvas>
-            <p>Accuracy</p>
+        <!-- WEAK WORDS -->
+        <div id="weakPanel">
+            <h3>Weak Words</h3>
+            <ul id="weakList"></ul>
         </div>
+
     </div>
 
-    <!-- 🧠 WEAK WORD PANEL -->
-    <div id="weakPanel">
-        <h3>Weak Words</h3>
-        <ul id="weakList"></ul>
-    </div>
+</div>
 
+
+<!-- SESSION REPORT OVERLAY -->
+<div id="report" class="hidden">
+    <div id="reportBox">
+
+        <h2>Session Report</h2>
+
+        <p id="reportStats"></p>
+
+        <div id="reportWeak">
+            <h3>Weak Words</h3>
+            <ul id="reportWeakList"></ul>
+        </div>
+
+        <button id="restartBtn">Restart</button>
+
+    </div>
 </div>
 
 <script src="script.js"></script>
