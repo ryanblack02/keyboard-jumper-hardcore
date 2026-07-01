@@ -1,6 +1,6 @@
 // ===============================
-// NEON TYPING HARDCORE
-// PRO DASHBOARD ANALYTICS ENGINE
+// NEON TYPING TRAINER PRO SYSTEM
+// WITH WEAK WORD DETECTOR + ANALYTICS
 // ===============================
 
 // DOM
@@ -8,10 +8,11 @@ const gameEl = document.getElementById("game");
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
-const modeEl = document.getElementById("mode");
 
 const wpmCanvas = document.getElementById("wpmChart");
 const accCanvas = document.getElementById("accChart");
+
+const weakListEl = document.getElementById("weakList");
 
 const wpmCtx = wpmCanvas.getContext("2d");
 const accCtx = accCanvas.getContext("2d");
@@ -22,40 +23,21 @@ let currentWord = "";
 let typed = "";
 let gameOver = false;
 
-// TRAINING STATS
+// STATS
 let startTime = Date.now();
 let correctWords = 0;
 let totalWords = 0;
 let errorCount = 0;
 
-// 📊 DASHBOARD DATA (rolling history)
+// 📊 HISTORY
 let wpmHistory = [];
 let accHistory = [];
 const MAX_POINTS = 30;
 
-// ANTI-REPEAT MEMORY
+// 🧠 WEAK WORD TRACKING
+const wordErrors = {}; // {word: mistakes}
 let recentWords = [];
 const RECENT_LIMIT = 20;
-
-// -------------------------------
-// AUDIO (light trainer style)
-// -------------------------------
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-function beep(freq, duration = 0.03, volume = 0.02) {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    gain.gain.value = volume;
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-}
 
 // -------------------------------
 // LOAD WORDS
@@ -63,23 +45,18 @@ function beep(freq, duration = 0.03, volume = 0.02) {
 fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
     .then(res => res.text())
     .then(text => {
-
         allWords = text
             .split("\n")
             .map(w => w.trim().toLowerCase())
-            .filter(w =>
-                /^[a-z]+$/.test(w) &&
-                w.length >= 2 &&
-                w.length <= 16
-            );
+            .filter(w => /^[a-z]+$/.test(w));
 
-        startSession();
+        startGame();
     });
 
 // -------------------------------
-// START SESSION
+// START
 // -------------------------------
-function startSession() {
+function startGame() {
     gameOver = false;
 
     startTime = Date.now();
@@ -89,10 +66,9 @@ function startSession() {
 
     wpmHistory = [];
     accHistory = [];
-
     recentWords = [];
 
-    statusEl.textContent = "Pro Trainer Mode — Build smooth accuracy";
+    statusEl.textContent = "Pro Trainer Active — Build consistency";
     inputEl.value = "";
     inputEl.focus();
 
@@ -100,40 +76,15 @@ function startSession() {
 }
 
 // -------------------------------
-// END SESSION
-// -------------------------------
-function endSession() {
-    gameOver = true;
-
-    statusEl.textContent =
-        `Session Complete — WPM: ${getWPM()} | ACC: ${getAccuracy()}% | ERR: ${errorCount} — Press Enter`;
-}
-
-// -------------------------------
-// WORD PICKER
+// WORD PICKER (SMOOTH FLOW)
 // -------------------------------
 function getWord() {
-    const mode = modeEl.value;
-    const len = allWords.length;
-
-    let start = 0;
-    let end = len;
-
-    if (mode === "casual") end = len * 0.3;
-    else if (mode === "standard") {
-        start = len * 0.1;
-        end = len * 0.75;
-    }
-    else if (mode === "hardcore") {
-        start = len * 0.3;
-    }
-
-    const slice = allWords.slice(start, end);
+    const slice = allWords;
 
     for (let i = 0; i < 20; i++) {
         const word = slice[Math.floor(Math.random() * slice.length)];
-        if (!word) continue;
 
+        if (!word) continue;
         if (recentWords.includes(word)) continue;
 
         recentWords.push(word);
@@ -142,29 +93,29 @@ function getWord() {
         return word;
     }
 
-    return slice[0] || "code";
+    return "code";
 }
 
 // -------------------------------
-// STATS CALC
+// STATS
 // -------------------------------
 function getWPM() {
-    const minutes = (Date.now() - startTime) / 60000;
-    return minutes > 0 ? Math.round(correctWords / minutes) : 0;
+    const min = (Date.now() - startTime) / 60000;
+    return min > 0 ? Math.round(correctWords / min) : 0;
 }
 
-function getAccuracy() {
+function getACC() {
     return totalWords > 0
         ? Math.round((correctWords / totalWords) * 100)
         : 100;
 }
 
 // -------------------------------
-// DASHBOARD UPDATE (CORE FEATURE)
+// UPDATE DASHBOARD
 // -------------------------------
-function updateDashboard() {
+function updateCharts() {
     const wpm = getWPM();
-    const acc = getAccuracy();
+    const acc = getACC();
 
     wpmHistory.push(wpm);
     accHistory.push(acc);
@@ -172,35 +123,51 @@ function updateDashboard() {
     if (wpmHistory.length > MAX_POINTS) wpmHistory.shift();
     if (accHistory.length > MAX_POINTS) accHistory.shift();
 
-    drawChart(wpmCtx, wpmHistory, "#00fff7");
-    drawChart(accCtx, accHistory, "#ff00ff");
+    draw(wpmCtx, wpmHistory, "#00fff7");
+    draw(accCtx, accHistory, "#ff00ff");
+
+    updateWeakWords();
 }
 
 // -------------------------------
-// SIMPLE LINE CHART (NO LIBRARIES)
+// DRAW LINE CHART
 // -------------------------------
-function drawChart(ctx, data, color) {
-    const canvas = ctx.canvas;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function draw(ctx, data, color) {
+    const c = ctx.canvas;
+    ctx.clearRect(0, 0, c.width, c.height);
 
     ctx.strokeStyle = color;
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = color;
-
     ctx.beginPath();
 
-    const step = canvas.width / (data.length - 1 || 1);
+    const step = c.width / (data.length - 1 || 1);
     const max = Math.max(...data, 1);
 
-    data.forEach((val, i) => {
+    data.forEach((v, i) => {
         const x = i * step;
-        const y = canvas.height - (val / max) * canvas.height;
+        const y = c.height - (v / max) * c.height;
 
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
     });
 
     ctx.stroke();
+}
+
+// -------------------------------
+// WEAK WORD DETECTOR (KEY FEATURE)
+// -------------------------------
+function updateWeakWords() {
+    weakListEl.innerHTML = "";
+
+    const sorted = Object.entries(wordErrors)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+    sorted.forEach(([word, count]) => {
+        const li = document.createElement("li");
+        li.textContent = `${word} (${count} mistakes)`;
+        weakListEl.appendChild(li);
+    });
 }
 
 // -------------------------------
@@ -214,40 +181,34 @@ function nextWord() {
     inputEl.value = "";
     inputEl.focus();
 
-    updateDashboard();
+    updateCharts();
 }
 
 // -------------------------------
 // INPUT LOGIC
 // -------------------------------
 inputEl.addEventListener("input", () => {
-    if (gameOver || allWords.length === 0) return;
+    if (gameOver) return;
 
     typed = inputEl.value;
 
+    // ERROR
     if (!currentWord.startsWith(typed)) {
         errorCount++;
-        endSession();
+
+        wordErrors[currentWord] =
+            (wordErrors[currentWord] || 0) + 1;
+
         return;
     }
 
+    // COMPLETE WORD
     if (typed === currentWord) {
         totalWords++;
         correctWords++;
 
-        beep(200, 0.03, 0.02);
-
-        setTimeout(nextWord, 80);
+        setTimeout(nextWord, 60);
     }
 
-    updateDashboard();
-});
-
-// -------------------------------
-// RESTART
-// -------------------------------
-document.addEventListener("keydown", (e) => {
-    if (gameOver && e.key === "Enter") {
-        startSession();
-    }
+    updateCharts();
 });
