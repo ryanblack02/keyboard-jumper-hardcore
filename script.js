@@ -1,6 +1,6 @@
 // ===============================
-// NEON HARDCORE KEYBOARD JUMPER
-// FINAL POLISHED WORD ENGINE (FIXED)
+// NEON TYPING HARDCORE
+// PRO DASHBOARD ANALYTICS ENGINE
 // ===============================
 
 // DOM
@@ -8,27 +8,45 @@ const gameEl = document.getElementById("game");
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
-const difficultyEl = document.getElementById("difficulty");
 const modeEl = document.getElementById("mode");
+
+const wpmCanvas = document.getElementById("wpmChart");
+const accCanvas = document.getElementById("accChart");
+
+const wpmCtx = wpmCanvas.getContext("2d");
+const accCtx = accCanvas.getContext("2d");
 
 // STATE
 let allWords = [];
 let currentWord = "";
 let typed = "";
 let gameOver = false;
-let combo = 0;
 
-// prevent immediate repetition (BIG FIX)
-let lastWord = "";
+// TRAINING STATS
+let startTime = Date.now();
+let correctWords = 0;
+let totalWords = 0;
+let errorCount = 0;
 
-// AUDIO
+// 📊 DASHBOARD DATA (rolling history)
+let wpmHistory = [];
+let accHistory = [];
+const MAX_POINTS = 30;
+
+// ANTI-REPEAT MEMORY
+let recentWords = [];
+const RECENT_LIMIT = 20;
+
+// -------------------------------
+// AUDIO (light trainer style)
+// -------------------------------
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-function beep(freq, duration = 0.04, volume = 0.04) {
+function beep(freq, duration = 0.03, volume = 0.02) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    osc.type = "square";
+    osc.type = "sine";
     osc.frequency.value = freq;
     gain.gain.value = volume;
 
@@ -40,7 +58,7 @@ function beep(freq, duration = 0.04, volume = 0.04) {
 }
 
 // -------------------------------
-// LOAD WORDS (CLEAN + SAFE)
+// LOAD WORDS
 // -------------------------------
 fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
     .then(res => res.text())
@@ -49,33 +67,32 @@ fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/maste
         allWords = text
             .split("\n")
             .map(w => w.trim().toLowerCase())
-
-            // HARD CLEANING (fixes "],", junk, symbols)
             .filter(w =>
                 /^[a-z]+$/.test(w) &&
-                w.length > 1 &&
-                w.length < 20
+                w.length >= 2 &&
+                w.length <= 16
             );
 
-        console.log("Loaded words:", allWords.length);
-
-        startGame();
-    })
-    .catch(err => {
-        statusEl.textContent = "Failed to load word list";
-        console.error(err);
+        startSession();
     });
 
 // -------------------------------
-// START GAME
+// START SESSION
 // -------------------------------
-function startGame() {
+function startSession() {
     gameOver = false;
-    combo = 0;
-    typed = "";
-    lastWord = "";
 
-    statusEl.textContent = "Focus. One mistake ends everything.";
+    startTime = Date.now();
+    correctWords = 0;
+    totalWords = 0;
+    errorCount = 0;
+
+    wpmHistory = [];
+    accHistory = [];
+
+    recentWords = [];
+
+    statusEl.textContent = "Pro Trainer Mode — Build smooth accuracy";
     inputEl.value = "";
     inputEl.focus();
 
@@ -83,102 +100,121 @@ function startGame() {
 }
 
 // -------------------------------
-// GAME OVER
+// END SESSION
 // -------------------------------
-function endGame() {
+function endSession() {
     gameOver = true;
 
-    statusEl.textContent = `💀 SYSTEM FAILURE — Combo: ${combo} — Press Enter`;
-
-    combo = 0;
-
-    shake();
-    beep(90, 0.2, 0.08);
+    statusEl.textContent =
+        `Session Complete — WPM: ${getWPM()} | ACC: ${getAccuracy()}% | ERR: ${errorCount} — Press Enter`;
 }
 
 // -------------------------------
-// SHAKE EFFECT
+// WORD PICKER
 // -------------------------------
-function shake() {
-    gameEl.classList.add("shake");
-    setTimeout(() => gameEl.classList.remove("shake"), 300);
-}
-
-// -------------------------------
-// WORD PICKER (FIXED + NO REPETITION + SMOOTH FLOW)
-// -------------------------------
-function getRandomWord() {
+function getWord() {
     const mode = modeEl.value;
-    const difficulty = Number(difficultyEl.value);
-
     const len = allWords.length;
 
     let start = 0;
     let end = len;
 
-    // MODE RANGE CONTROL
-    if (mode === "casual") {
-        start = 0;
-        end = len * 0.25;
-    } 
+    if (mode === "casual") end = len * 0.3;
     else if (mode === "standard") {
         start = len * 0.1;
-        end = len * 0.7;
-    } 
+        end = len * 0.75;
+    }
     else if (mode === "hardcore") {
         start = len * 0.3;
-        end = len;
     }
 
     const slice = allWords.slice(start, end);
 
-    // SAFETY: avoid empty slices
-    if (!slice.length) return allWords[0];
-
-    // SMART RANDOM PICK (prevents repetition)
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
         const word = slice[Math.floor(Math.random() * slice.length)];
-
         if (!word) continue;
 
-        // prevent immediate repeat (BIG IMPROVEMENT)
-        if (word === lastWord) continue;
+        if (recentWords.includes(word)) continue;
 
-        // difficulty filter
-        if (difficulty === 1 && word.length > 6) continue;
-        if (difficulty === 3 && word.length < 4) continue;
+        recentWords.push(word);
+        if (recentWords.length > RECENT_LIMIT) recentWords.shift();
 
-        lastWord = word;
         return word;
     }
 
-    // fallback (safe, not biased like "code")
-    return slice[Math.floor(Math.random() * slice.length)];
+    return slice[0] || "code";
+}
+
+// -------------------------------
+// STATS CALC
+// -------------------------------
+function getWPM() {
+    const minutes = (Date.now() - startTime) / 60000;
+    return minutes > 0 ? Math.round(correctWords / minutes) : 0;
+}
+
+function getAccuracy() {
+    return totalWords > 0
+        ? Math.round((correctWords / totalWords) * 100)
+        : 100;
+}
+
+// -------------------------------
+// DASHBOARD UPDATE (CORE FEATURE)
+// -------------------------------
+function updateDashboard() {
+    const wpm = getWPM();
+    const acc = getAccuracy();
+
+    wpmHistory.push(wpm);
+    accHistory.push(acc);
+
+    if (wpmHistory.length > MAX_POINTS) wpmHistory.shift();
+    if (accHistory.length > MAX_POINTS) accHistory.shift();
+
+    drawChart(wpmCtx, wpmHistory, "#00fff7");
+    drawChart(accCtx, accHistory, "#ff00ff");
+}
+
+// -------------------------------
+// SIMPLE LINE CHART (NO LIBRARIES)
+// -------------------------------
+function drawChart(ctx, data, color) {
+    const canvas = ctx.canvas;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.strokeStyle = color;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = color;
+
+    ctx.beginPath();
+
+    const step = canvas.width / (data.length - 1 || 1);
+    const max = Math.max(...data, 1);
+
+    data.forEach((val, i) => {
+        const x = i * step;
+        const y = canvas.height - (val / max) * canvas.height;
+
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+
+    ctx.stroke();
 }
 
 // -------------------------------
 // NEXT WORD
 // -------------------------------
 function nextWord() {
-    currentWord = getRandomWord();
+    currentWord = getWord();
     typed = "";
 
     wordEl.textContent = currentWord;
     inputEl.value = "";
     inputEl.focus();
 
-    flash();
-
-    statusEl.textContent =
-        combo > 0 ? `Combo: ${combo}` : "Keep going...";
-}
-
-// -------------------------------
-// VISUAL FEEDBACK
-// -------------------------------
-function flash() {
-    wordEl.classList.add("glow");
-    setTimeout(() => wordEl.classList.remove("glow"), 120);
+    updateDashboard();
 }
 
 // -------------------------------
@@ -189,23 +225,22 @@ inputEl.addEventListener("input", () => {
 
     typed = inputEl.value;
 
-    flash();
-
-    // FAIL
     if (!currentWord.startsWith(typed)) {
-        endGame();
+        errorCount++;
+        endSession();
         return;
     }
 
-    // SUCCESS
     if (typed === currentWord) {
-        combo++;
+        totalWords++;
+        correctWords++;
 
-        const pitch = 180 + combo * 10;
-        beep(pitch, 0.03, 0.03);
+        beep(200, 0.03, 0.02);
 
-        setTimeout(nextWord, 120);
+        setTimeout(nextWord, 80);
     }
+
+    updateDashboard();
 });
 
 // -------------------------------
@@ -213,6 +248,6 @@ inputEl.addEventListener("input", () => {
 // -------------------------------
 document.addEventListener("keydown", (e) => {
     if (gameOver && e.key === "Enter") {
-        startGame();
+        startSession();
     }
 });
