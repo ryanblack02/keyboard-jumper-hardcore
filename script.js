@@ -1,62 +1,60 @@
 // ===============================
-// NEON TYPING TRAINER PRO SYSTEM
-// WITH WEAK WORD DETECTOR + ANALYTICS
+// NEON TYPING TRAINER
+// SPACED REPETITION SYSTEM (DUOLINGO STYLE)
 // ===============================
 
 // DOM
-const gameEl = document.getElementById("game");
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
 
 const wpmCanvas = document.getElementById("wpmChart");
 const accCanvas = document.getElementById("accChart");
-
 const weakListEl = document.getElementById("weakList");
 
 const wpmCtx = wpmCanvas.getContext("2d");
 const accCtx = accCanvas.getContext("2d");
 
+// ===============================
 // STATE
+// ===============================
 let allWords = [];
 let currentWord = "";
 let typed = "";
 let gameOver = false;
 
-// STATS
 let startTime = Date.now();
+
 let correctWords = 0;
 let totalWords = 0;
 let errorCount = 0;
 
-// 📊 HISTORY
+// 📊 analytics
 let wpmHistory = [];
 let accHistory = [];
 const MAX_POINTS = 30;
 
-// 🧠 WEAK WORD TRACKING
-const wordErrors = {}; // {word: mistakes}
-let recentWords = [];
-const RECENT_LIMIT = 20;
+// 🧠 SPACED REPETITION MEMORY
+const wordData = {};
+let sessionTick = 0;
 
-// -------------------------------
+// ===============================
 // LOAD WORDS
-// -------------------------------
+// ===============================
 fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
-    .then(res => res.text())
+    .then(r => r.text())
     .then(text => {
+
         allWords = text
             .split("\n")
             .map(w => w.trim().toLowerCase())
             .filter(w => /^[a-z]+$/.test(w));
 
-        startGame();
+        start();
     });
 
-// -------------------------------
-// START
-// -------------------------------
-function startGame() {
+// ===============================
+function start() {
     gameOver = false;
 
     startTime = Date.now();
@@ -66,39 +64,108 @@ function startGame() {
 
     wpmHistory = [];
     accHistory = [];
-    recentWords = [];
 
-    statusEl.textContent = "Pro Trainer Active — Build consistency";
+    sessionTick = 0;
+
+    statusEl.textContent = "Spaced Repetition Mode — Training memory system active";
     inputEl.value = "";
     inputEl.focus();
 
     nextWord();
 }
 
-// -------------------------------
-// WORD PICKER (SMOOTH FLOW)
-// -------------------------------
-function getWord() {
-    const slice = allWords;
-
-    for (let i = 0; i < 20; i++) {
-        const word = slice[Math.floor(Math.random() * slice.length)];
-
-        if (!word) continue;
-        if (recentWords.includes(word)) continue;
-
-        recentWords.push(word);
-        if (recentWords.length > RECENT_LIMIT) recentWords.shift();
-
-        return word;
+// ===============================
+// INIT WORD DATA
+// ===============================
+function initWord(word) {
+    if (!wordData[word]) {
+        wordData[word] = {
+            interval: 1,     // when it should reappear
+            ease: 2.5,       // difficulty modifier
+            lastSeen: 0,
+            mistakes: 0,
+            mastery: 0       // 0–5
+        };
     }
-
-    return "code";
 }
 
-// -------------------------------
+// ===============================
+// SCHEDULER (SPACED REPETITION ENGINE)
+// ===============================
+function getNextWord() {
+
+    let candidates = [];
+
+    for (let word of allWords) {
+        initWord(word);
+
+        const data = wordData[word];
+
+        // eligible if due OR never seen
+        if (sessionTick >= data.lastSeen + data.interval) {
+            const weight = 1 + data.mistakes * 2 + (5 - data.mastery);
+
+            const count = Math.min(Math.floor(weight), 6);
+
+            for (let i = 0; i < count; i++) {
+                candidates.push(word);
+            }
+        }
+    }
+
+    // fallback safety
+    if (candidates.length === 0) {
+        return allWords[Math.floor(Math.random() * allWords.length)];
+    }
+
+    return candidates[Math.floor(Math.random() * candidates.length)];
+}
+
+// ===============================
+// NEXT WORD
+// ===============================
+function nextWord() {
+    sessionTick++;
+
+    currentWord = getNextWord();
+    typed = "";
+
+    initWord(currentWord);
+    wordData[currentWord].lastSeen = sessionTick;
+
+    wordEl.textContent = currentWord;
+    inputEl.value = "";
+    inputEl.focus();
+
+    updateDashboard();
+}
+
+// ===============================
+// UPDATE WORD LEARNING STATE
+// ===============================
+function markCorrect(word) {
+    const d = wordData[word];
+
+    d.mastery = Math.min(5, d.mastery + 1);
+    d.ease = Math.min(3.0, d.ease + 0.1);
+
+    // increase spacing (longer delay next time)
+    d.interval = Math.floor(d.interval * d.ease);
+}
+
+function markWrong(word) {
+    const d = wordData[word];
+
+    d.mistakes++;
+    d.mastery = Math.max(0, d.mastery - 1);
+
+    // bring it back FAST
+    d.interval = 1;
+}
+
+// ===============================
 // STATS
-// -------------------------------
+// ===============================
 function getWPM() {
     const min = (Date.now() - startTime) / 60000;
     return min > 0 ? Math.round(correctWords / min) : 0;
@@ -110,10 +177,10 @@ function getACC() {
         : 100;
 }
 
-// -------------------------------
-// UPDATE DASHBOARD
-// -------------------------------
-function updateCharts() {
+// ===============================
+// DASHBOARD
+// ===============================
+function updateDashboard() {
     const wpm = getWPM();
     const acc = getACC();
 
@@ -129,9 +196,26 @@ function updateCharts() {
     updateWeakWords();
 }
 
-// -------------------------------
-// DRAW LINE CHART
-// -------------------------------
+// ===============================
+// WEAK WORD LIST
+// ===============================
+function updateWeakWords() {
+    weakListEl.innerHTML = "";
+
+    const weak = Object.entries(wordData)
+        .sort((a, b) => b[1].mistakes - a[1].mistakes)
+        .slice(0, 6);
+
+    for (let [word, data] of weak) {
+        const li = document.createElement("li");
+        li.textContent = `${word} (M:${data.mistakes}, L:${data.mastery})`;
+        weakListEl.appendChild(li);
+    }
+}
+
+// ===============================
+// DRAW CHART
+// ===============================
 function draw(ctx, data, color) {
     const c = ctx.canvas;
     ctx.clearRect(0, 0, c.width, c.height);
@@ -153,62 +237,32 @@ function draw(ctx, data, color) {
     ctx.stroke();
 }
 
-// -------------------------------
-// WEAK WORD DETECTOR (KEY FEATURE)
-// -------------------------------
-function updateWeakWords() {
-    weakListEl.innerHTML = "";
-
-    const sorted = Object.entries(wordErrors)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
-
-    sorted.forEach(([word, count]) => {
-        const li = document.createElement("li");
-        li.textContent = `${word} (${count} mistakes)`;
-        weakListEl.appendChild(li);
-    });
-}
-
-// -------------------------------
-// NEXT WORD
-// -------------------------------
-function nextWord() {
-    currentWord = getWord();
-    typed = "";
-
-    wordEl.textContent = currentWord;
-    inputEl.value = "";
-    inputEl.focus();
-
-    updateCharts();
-}
-
-// -------------------------------
+// ===============================
 // INPUT LOGIC
-// -------------------------------
+// ===============================
 inputEl.addEventListener("input", () => {
     if (gameOver) return;
 
     typed = inputEl.value;
 
-    // ERROR
+    // ❌ mistake
     if (!currentWord.startsWith(typed)) {
         errorCount++;
 
-        wordErrors[currentWord] =
-            (wordErrors[currentWord] || 0) + 1;
+        markWrong(currentWord);
 
         return;
     }
 
-    // COMPLETE WORD
+    // ✅ complete word
     if (typed === currentWord) {
         totalWords++;
         correctWords++;
 
-        setTimeout(nextWord, 60);
+        markCorrect(currentWord);
+
+        setTimeout(nextWord, 40);
     }
 
-    updateCharts();
+    updateDashboard();
 });
