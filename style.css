@@ -1,39 +1,94 @@
 body {
     margin: 0;
-    background: radial-gradient(circle at center, #0a0a0a, #000);
     font-family: monospace;
-    color: #00fff7;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    color: #00fff7;
+
+    background: black;
+    overflow: hidden;
+}
+
+/* animated neon grid background */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background:
+        linear-gradient(#00fff710 1px, transparent 1px),
+        linear-gradient(90deg, #00fff710 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 8s linear infinite;
+    z-index: 0;
+}
+
+@keyframes gridMove {
+    from { transform: translate(0,0); }
+    to { transform: translate(-60px,-60px); }
+}
+
+#game {
+    position: relative;
+    z-index: 1;
     text-align: center;
+    padding: 30px;
+    border: 2px solid #00fff7;
+    box-shadow: 0 0 25px #00fff7;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.7);
 }
 
 h1 {
     color: #ff00ff;
-    text-shadow: 0 0 15px #ff00ff;
+    text-shadow: 0 0 20px #ff00ff;
+    margin-bottom: 10px;
 }
 
 #word {
-    font-size: 32px;
-    text-shadow: 0 0 15px #00fff7;
-    margin: 20px 0;
+    font-size: 36px;
+    text-shadow: 0 0 20px #00fff7;
+    transition: transform 0.1s ease;
+}
+
+/* typing glow effect */
+#word.glow {
+    text-shadow: 0 0 30px #00fff7, 0 0 60px #00fff7;
+    transform: scale(1.05);
 }
 
 input {
-    padding: 10px;
+    margin-top: 15px;
+    padding: 12px;
     font-size: 18px;
     width: 260px;
     text-align: center;
+
     border: 1px solid #00fff7;
     background: black;
     color: #00fff7;
-    box-shadow: 0 0 10px #00fff7;
+
+    box-shadow: 0 0 15px #00fff7;
     outline: none;
 }
 
 #status {
     margin-top: 15px;
     opacity: 0.8;
+    font-size: 14px;
+}
+
+/* screen shake */
+.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(5px,-5px); }
+    50% { transform: translate(-5px,5px); }
+    75% { transform: translate(5px,5px); }
+    100% { transform: translate(0,0); }
 }
