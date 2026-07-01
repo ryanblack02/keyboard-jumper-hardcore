@@ -1,174 +1,338 @@
-/* ===============================
-   BASE LAYOUT
-=============================== */
+/* ===================================
+   NEON TYPING TRAINER
+   STYLE.CSS
+=================================== */
+
+/* ---------- GLOBAL ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    margin: 0;
-    background: radial-gradient(circle at center, #0a0a0a, #000);
-    font-family: monospace;
-    color: #00fff7;
-    height: 100vh;
+    background: radial-gradient(circle at center, #101010, #000000);
+    color: #00ffff;
+    font-family: Consolas, Monaco, monospace;
+
+    min-height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* APP WRAPPER */
+/* ---------- MAIN APP ---------- */
+
 #app {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#game {
+    width: min(900px, 95vw);
     text-align: center;
 }
 
-/* ===============================
-   TITLE
-=============================== */
+/* ---------- TITLE ---------- */
 
-.title {
+.title,
+h1 {
     color: #ff00ff;
-    text-shadow: 0 0 15px #ff00ff;
+    text-shadow:
+        0 0 8px #ff00ff,
+        0 0 18px #ff00ff;
+
+    margin-bottom: 15px;
 }
 
-/* ===============================
-   WORD DISPLAY
-=============================== */
+/* ---------- STATUS ---------- */
+
+#status {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #dddddd;
+}
+
+/* ---------- WORD ---------- */
 
 #word {
-    font-size: 40px;
-    text-shadow: 0 0 15px #00fff7;
-    margin: 10px 0;
+    font-size: 46px;
+    margin-bottom: 20px;
+
+    color: #00ffff;
+
+    text-shadow:
+        0 0 8px #00ffff,
+        0 0 20px #00ffff;
 }
 
-/* ===============================
-   INPUT
-=============================== */
+/* ---------- INPUT ---------- */
 
-input {
-    margin-top: 10px;
-    padding: 10px;
-    font-size: 18px;
-    width: 260px;
-    border: 1px solid #00fff7;
-    background: black;
-    color: #00fff7;
+#input {
+    width: 300px;
+
+    padding: 12px;
+
+    background: #000;
+
+    color: #00ffff;
+
+    border: 2px solid #00ffff;
+
+    border-radius: 8px;
+
+    font-size: 22px;
+
     text-align: center;
-    box-shadow: 0 0 10px #00fff7;
+
     outline: none;
+
+    transition: .2s;
 }
 
-/* ===============================
-   DASHBOARD
-=============================== */
+#input:focus {
+
+    box-shadow:
+
+        0 0 8px #00ffff,
+
+        0 0 20px #00ffff;
+}
+
+/* ---------- DASHBOARD ---------- */
 
 #dashboard {
-    margin-top: 20px;
+
+    margin-top: 30px;
+
     display: flex;
-    gap: 15px;
+
     justify-content: center;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
 }
 
 .panel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+
+    background: rgba(255,255,255,.03);
+
+    border: 1px solid #00ffff;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    box-shadow: 0 0 10px rgba(0,255,255,.3);
+}
+
+.panel p {
+
+    margin-top: 10px;
+
+    color: white;
 }
 
 canvas {
+
     width: 220px;
+
     height: 120px;
-    border: 1px solid #00fff7;
-    box-shadow: 0 0 10px #00fff7;
-    background: rgba(0,0,0,0.4);
+
+    display: block;
 }
 
-/* ===============================
-   WEAK WORD PANEL
-=============================== */
+/* ---------- WEAK WORDS ---------- */
 
 #weakPanel {
-    margin-top: 15px;
+
+    margin-top: 25px;
+
     border: 1px solid #ff00ff;
-    padding: 10px;
-    box-shadow: 0 0 10px #ff00ff;
-    display: inline-block;
-    min-width: 250px;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    background: rgba(255,255,255,.03);
+
+    box-shadow: 0 0 10px rgba(255,0,255,.3);
 }
 
 #weakPanel h3 {
-    margin: 5px 0;
-}
 
-#weakList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#weakList li {
     color: #ff00ff;
-    font-size: 14px;
-    margin: 3px 0;
-}
 
-/* ===============================
-   SESSION REPORT OVERLAY
-=============================== */
-
-.hidden {
-    display: none;
-}
-
-#report {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* REPORT BOX */
-#reportBox {
-    width: 340px;
-    padding: 20px;
-    border: 1px solid #00fff7;
-    box-shadow: 0 0 20px #00fff7;
-    background: rgba(0,0,0,0.95);
-    text-align: center;
-}
-
-#reportBox h2 {
-    color: #ff00ff;
     margin-bottom: 10px;
 }
 
-/* WEAK WORDS */
-#reportWeak {
-    margin-top: 10px;
-    border-top: 1px solid #00fff7;
-    padding-top: 10px;
-}
+#weakList {
 
-#reportWeak ul {
     list-style: none;
-    padding: 0;
 }
 
-#reportWeak li {
+#weakList li {
+
+    padding: 4px;
+
+    color: #ffffff;
+}
+
+/* ===================================
+   SESSION REPORT
+=================================== */
+
+/*
+IMPORTANT:
+
+The report is HIDDEN by default.
+
+Only JavaScript removes the "hidden"
+class after Game Over.
+*/
+
+#report {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.92);
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 9999;
+}
+
+/* Hidden state */
+
+#report.hidden {
+
+    display: none;
+}
+
+/* Visible state */
+
+#report:not(.hidden) {
+
+    display: flex;
+}
+
+#reportBox {
+
+    width: min(400px,90vw);
+
+    background: #111;
+
+    border: 2px solid #00ffff;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    box-shadow:
+
+        0 0 20px #00ffff,
+
+        0 0 40px rgba(0,255,255,.3);
+}
+
+#reportBox h2 {
+
     color: #ff00ff;
-    font-size: 14px;
-    margin: 3px 0;
+
+    margin-bottom: 20px;
 }
 
-/* RESTART BUTTON */
+#reportStats {
+
+    margin-bottom: 20px;
+
+    line-height: 1.6;
+}
+
+#reportWeak {
+
+    margin-top: 20px;
+}
+
+#reportWeak h3 {
+
+    margin-bottom: 10px;
+}
+
+#reportWeakList {
+
+    list-style: none;
+}
+
+#reportWeakList li {
+
+    padding: 5px;
+}
+
 #restartBtn {
-    margin-top: 15px;
-    padding: 8px 12px;
-    background: black;
-    border: 1px solid #00fff7;
-    color: #00fff7;
+
+    margin-top: 25px;
+
+    padding: 12px 24px;
+
+    font-size: 18px;
+
     cursor: pointer;
-    transition: 0.2s;
+
+    border: 2px solid #00ffff;
+
+    border-radius: 8px;
+
+    background: black;
+
+    color: #00ffff;
+
+    transition: .2s;
 }
 
 #restartBtn:hover {
-    box-shadow: 0 0 10px #00fff7;
+
+    background: #00ffff;
+
+    color: black;
+
+    box-shadow:
+
+        0 0 15px #00ffff;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:700px){
+
+    #dashboard{
+
+        flex-direction:column;
+
+        align-items:center;
+
+    }
+
+    #word{
+
+        font-size:34px;
+
+    }
+
+    #input{
+
+        width:90%;
+
+    }
+
 }
