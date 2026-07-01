@@ -1,16 +1,16 @@
 body {
     margin: 0;
     font-family: monospace;
+    background: black;
+    color: #00fff7;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle at center, #050505, #000);
-    color: #00fff7;
     overflow: hidden;
 }
 
-/* animated cyber grid */
+/* cyber grid background */
 body::before {
     content: "";
     position: absolute;
@@ -20,7 +20,7 @@ body::before {
         linear-gradient(#00fff710 1px, transparent 1px),
         linear-gradient(90deg, #00fff710 1px, transparent 1px);
     background-size: 60px 60px;
-    animation: move 10s linear infinite;
+    animation: move 12s linear infinite;
 }
 
 @keyframes move {
@@ -28,38 +28,68 @@ body::before {
     to { transform: translate(-60px,-60px); }
 }
 
-#game {
+/* APP LAYOUT */
+#app {
     position: relative;
     z-index: 1;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* SETTINGS PANEL */
+#settings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 15px;
+    border: 1px solid #00fff7;
+    box-shadow: 0 0 15px #00fff7;
+    background: rgba(0,0,0,0.7);
+    border-radius: 10px;
+    min-width: 160px;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* GAME BOX */
+#game {
     text-align: center;
     padding: 30px;
     border: 2px solid #00fff7;
     box-shadow: 0 0 30px #00fff7;
     background: rgba(0,0,0,0.75);
     border-radius: 12px;
+    min-width: 320px;
 }
 
 h1 {
     color: #ff00ff;
     text-shadow: 0 0 25px #ff00ff;
+    margin-bottom: 10px;
 }
 
 #word {
     font-size: 40px;
     text-shadow: 0 0 20px #00fff7;
-    transition: transform 0.1s ease, text-shadow 0.1s ease;
+    transition: transform 0.1s ease;
 }
 
 .glow {
     transform: scale(1.06);
-    text-shadow: 0 0 35px #00fff7, 0 0 70px #00fff7;
+    text-shadow: 0 0 35px #00fff7;
 }
 
 input {
     margin-top: 15px;
     padding: 12px;
     font-size: 18px;
-    width: 280px;
+    width: 260px;
     text-align: center;
     background: black;
     color: #00fff7;
@@ -74,7 +104,7 @@ input {
     opacity: 0.85;
 }
 
-/* death shake */
+/* SHAKE */
 .shake {
     animation: shake 0.25s;
 }
