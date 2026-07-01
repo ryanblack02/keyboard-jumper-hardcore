@@ -1,71 +1,69 @@
 // ===============================
 // NEON HARDCORE KEYBOARD JUMPER
-// Phase 1 Complete Build
+// PHASE 2 - DATA DRIVEN ENGINE
 // ===============================
 
-const wordPools = {
-    easy: [
-        "neon", "glow", "jump", "code", "react",
-        "pulse", "game", "type", "arcade", "focus"
-    ],
-
-    medium: [
-        "matrix", "vector", "cyber", "signal", "system",
-        "object", "function", "variable", "module", "browser"
-    ],
-
-    boss: [
-        "synchronization",
-        "architecture",
-        "implementation",
-        "optimization",
-        "configuration"
-    ]
-};
-
-// DOM
+// DOM elements
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
 
 // Game state
+let wordPools = null;
 let currentWord = "";
 let typed = "";
 let gameOver = false;
 
 // -------------------------------
-// Pick word by difficulty tier
+// Load word database (JSON)
+// -------------------------------
+fetch("words.json")
+    .then(res => res.json())
+    .then(data => {
+        wordPools = data;
+        startGame();
+    })
+    .catch(err => {
+        statusEl.textContent = "Failed to load words.json";
+        console.error(err);
+    });
+
+// -------------------------------
+// Pick random word (tier system)
 // -------------------------------
 function getRandomWord() {
     const roll = Math.random();
 
-    if (roll < 0.6) {
-        return wordPools.easy[Math.floor(Math.random() * wordPools.easy.length)];
+    if (roll < 0.65) {
+        return pick(wordPools.easy);
     } 
-    else if (roll < 0.9) {
-        return wordPools.medium[Math.floor(Math.random() * wordPools.medium.length)];
+    else if (roll < 0.90) {
+        return pick(wordPools.medium);
     } 
     else {
-        return wordPools.boss[Math.floor(Math.random() * wordPools.boss.length)];
+        return pick(wordPools.boss);
     }
 }
 
+// helper
+function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
 // -------------------------------
-// Start new game
+// Start / restart game
 // -------------------------------
-function newGame() {
+function startGame() {
     gameOver = false;
     typed = "";
-    currentWord = getRandomWord();
+    nextWord();
 
-    wordEl.textContent = currentWord;
     statusEl.textContent = "Focus. One mistake ends everything.";
-    inputEl.value = "";
     inputEl.focus();
 }
 
 // -------------------------------
-// End game (ONE LIFE RULE)
+// End game (hardcore mode)
 // -------------------------------
 function endGame() {
     gameOver = true;
@@ -78,6 +76,7 @@ function endGame() {
 function nextWord() {
     currentWord = getRandomWord();
     typed = "";
+
     wordEl.textContent = currentWord;
     inputEl.value = "";
     inputEl.focus();
@@ -87,34 +86,28 @@ function nextWord() {
 // Typing logic (core gameplay)
 // -------------------------------
 inputEl.addEventListener("input", () => {
-    if (gameOver) return;
+    if (gameOver || !wordPools) return;
 
     typed = inputEl.value;
 
-    // Instant fail if mismatch
+    // instant fail
     if (!currentWord.startsWith(typed)) {
         endGame();
         return;
     }
 
-    // Word completed
+    // success
     if (typed === currentWord) {
         statusEl.textContent = "✔ Correct!";
-        
-        setTimeout(() => {
-            nextWord();
-        }, 250);
+        setTimeout(nextWord, 200);
     }
 });
 
 // -------------------------------
-// Restart after death
+// Restart system
 // -------------------------------
 document.addEventListener("keydown", (e) => {
     if (gameOver && e.key === "Enter") {
-        newGame();
+        startGame();
     }
 });
-
-// Start game
-newGame();
