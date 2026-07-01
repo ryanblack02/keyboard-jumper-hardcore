@@ -1,16 +1,16 @@
 // ===============================
 // NEON TYPING TRAINER
-// SPACED REPETITION SYSTEM (DUOLINGO STYLE)
+// OPTIMIZED SPACED REPETITION ENGINE (O(1)-STYLE)
 // ===============================
 
 // DOM
 const wordEl = document.getElementById("word");
 const inputEl = document.getElementById("input");
 const statusEl = document.getElementById("status");
+const weakListEl = document.getElementById("weakList");
 
 const wpmCanvas = document.getElementById("wpmChart");
 const accCanvas = document.getElementById("accChart");
-const weakListEl = document.getElementById("weakList");
 
 const wpmCtx = wpmCanvas.getContext("2d");
 const accCtx = accCanvas.getContext("2d");
@@ -23,20 +23,25 @@ let currentWord = "";
 let typed = "";
 let gameOver = false;
 
-let startTime = Date.now();
+let tick = 0;
 
+// stats
+let startTime = Date.now();
 let correctWords = 0;
 let totalWords = 0;
 let errorCount = 0;
 
-// 📊 analytics
+// 📊 charts
 let wpmHistory = [];
 let accHistory = [];
 const MAX_POINTS = 30;
 
-// 🧠 SPACED REPETITION MEMORY
-const wordData = {};
-let sessionTick = 0;
+// 🧠 OPTIMIZED SPACING SYSTEM
+const scheduleMap = {}; // word -> next available tick
+const dueWords = [];    // active queue (small, fast)
+
+// weak tracking
+const wordStats = {};
 
 // ===============================
 // LOAD WORDS
@@ -50,12 +55,23 @@ fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/maste
             .map(w => w.trim().toLowerCase())
             .filter(w => /^[a-z]+$/.test(w));
 
+        initSchedule();
         start();
     });
 
 // ===============================
+// INIT (CRITICAL OPTIMIZATION STEP)
+// ===============================
+function initSchedule() {
+    for (let w of allWords) {
+        scheduleMap[w] = 0; // all words available at start
+    }
+}
+
+// ===============================
 function start() {
     gameOver = false;
+    tick = 0;
 
     startTime = Date.now();
     correctWords = 0;
@@ -65,9 +81,10 @@ function start() {
     wpmHistory = [];
     accHistory = [];
 
-    sessionTick = 0;
+    dueWords.length = 0;
 
-    statusEl.textContent = "Spaced Repetition Mode — Training memory system active";
+    statusEl.textContent = "Optimized Training Mode — Scalable Engine Active";
+
     inputEl.value = "";
     inputEl.focus();
 
@@ -75,92 +92,59 @@ function start() {
 }
 
 // ===============================
-// INIT WORD DATA
+// FAST QUEUE UPDATE (NO FULL SCAN)
 // ===============================
-function initWord(word) {
-    if (!wordData[word]) {
-        wordData[word] = {
-            interval: 1,     // when it should reappear
-            ease: 2.5,       // difficulty modifier
-            lastSeen: 0,
-            mistakes: 0,
-            mastery: 0       // 0–5
-        };
-    }
-}
+function refreshDueQueue() {
+    dueWords.length = 0;
 
-// ===============================
-// SCHEDULER (SPACED REPETITION ENGINE)
-// ===============================
-function getNextWord() {
+    for (let i = 0; i < 200; i++) {
+        const w = allWords[Math.floor(Math.random() * allWords.length)];
 
-    let candidates = [];
-
-    for (let word of allWords) {
-        initWord(word);
-
-        const data = wordData[word];
-
-        // eligible if due OR never seen
-        if (sessionTick >= data.lastSeen + data.interval) {
-            const weight = 1 + data.mistakes * 2 + (5 - data.mastery);
-
-            const count = Math.min(Math.floor(weight), 6);
-
-            for (let i = 0; i < count; i++) {
-                candidates.push(word);
-            }
+        if (scheduleMap[w] <= tick) {
+            dueWords.push(w);
         }
     }
 
-    // fallback safety
-    if (candidates.length === 0) {
-        return allWords[Math.floor(Math.random() * allWords.length)];
+    if (dueWords.length === 0) {
+        dueWords.push(allWords[Math.floor(Math.random() * allWords.length)]);
     }
-
-    return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
 // ===============================
-// NEXT WORD
+// NEXT WORD (O(1)-STYLE PICK)
 // ===============================
 function nextWord() {
-    sessionTick++;
+    tick++;
 
-    currentWord = getNextWord();
+    refreshDueQueue();
+
+    currentWord = dueWords[Math.floor(Math.random() * dueWords.length)];
     typed = "";
 
-    initWord(currentWord);
-    wordData[currentWord].lastSeen = sessionTick;
+    // ensure stats exist
+    if (!wordStats[currentWord]) {
+        wordStats[currentWord] = { mistakes: 0, mastery: 0 };
+    }
 
     wordEl.textContent = currentWord;
     inputEl.value = "";
     inputEl.focus();
 
+    scheduleMap[currentWord] = tick + getInterval(currentWord);
+
     updateDashboard();
 }
 
 // ===============================
-// UPDATE WORD LEARNING STATE
+// SPACING LOGIC (FAST)
 // ===============================
-function markCorrect(word) {
-    const d = wordData[word];
+function getInterval(word) {
+    const stats = wordStats[word];
 
-    d.mastery = Math.min(5, d.mastery + 1);
-    d.ease = Math.min(3.0, d.ease + 0.1);
+    if (!stats) return 2;
 
-    // increase spacing (longer delay next time)
-    d.interval = Math.floor(d.interval * d.ease);
-}
-
-function markWrong(word) {
-    const d = wordData[word];
-
-    d.mistakes++;
-    d.mastery = Math.max(0, d.mastery - 1);
-
-    // bring it back FAST
-    d.interval = 1;
+    // mastery increases spacing
+    return 2 + stats.mastery * 3 + stats.mistakes * 2;
 }
 
 // ===============================
@@ -178,7 +162,7 @@ function getACC() {
 }
 
 // ===============================
-// DASHBOARD
+// UPDATE DASHBOARD
 // ===============================
 function updateDashboard() {
     const wpm = getWPM();
@@ -197,16 +181,16 @@ function updateDashboard() {
 }
 
 // ===============================
-// WEAK WORD LIST
+// WEAK WORD DETECTOR (FAST)
 // ===============================
 function updateWeakWords() {
     weakListEl.innerHTML = "";
 
-    const weak = Object.entries(wordData)
+    const sorted = Object.entries(wordStats)
         .sort((a, b) => b[1].mistakes - a[1].mistakes)
         .slice(0, 6);
 
-    for (let [word, data] of weak) {
+    for (let [word, data] of sorted) {
         const li = document.createElement("li");
         li.textContent = `${word} (M:${data.mistakes}, L:${data.mastery})`;
         weakListEl.appendChild(li);
@@ -245,21 +229,20 @@ inputEl.addEventListener("input", () => {
 
     typed = inputEl.value;
 
-    // ❌ mistake
     if (!currentWord.startsWith(typed)) {
         errorCount++;
 
-        markWrong(currentWord);
+        wordStats[currentWord].mistakes++;
 
         return;
     }
 
-    // ✅ complete word
     if (typed === currentWord) {
         totalWords++;
         correctWords++;
 
-        markCorrect(currentWord);
+        wordStats[currentWord].mastery =
+            Math.min(5, (wordStats[currentWord].mastery || 0) + 1);
 
         setTimeout(nextWord, 40);
     }
