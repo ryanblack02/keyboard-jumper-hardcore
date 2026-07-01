@@ -2,26 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Keyboard Jumper Hardcore</title>
+    <title>Neon Typing Hardcore</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<div id="app">
+
+    <!-- SETTINGS PANEL -->
+    <div id="settings">
+
+        <div class="setting-group">
+            <label>Difficulty</label>
+            <input id="difficulty" type="range" min="1" max="3" value="2">
+        </div>
+
+        <div class="setting-group">
+            <label>Mode</label>
+            <select id="mode">
+                <option value="standard">Standard</option>
+                <option value="casual">Casual</option>
+                <option value="hardcore">Hardcore</option>
+                <option value="chaos">Chaos</option>
+            </select>
+        </div>
+
+    </div>
+
+    <!-- GAME AREA -->
     <div id="game">
+
         <h1>Neon Typing Hardcore</h1>
 
-        <p>Type the word below:</p>
+        <p id="hint">Type the word below</p>
 
         <h2 id="word">loading...</h2>
 
-        <input id="input" type="text" autocomplete="off" autofocus />
+        <input id="input" type="text" autocomplete="off" />
 
-        <p id="status">Loading word system...</p>
+        <p id="status">Loading...</p>
+
     </div>
 
-    <script src="script.js"></script>
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
