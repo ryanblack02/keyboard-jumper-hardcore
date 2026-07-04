@@ -1,73 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Neon Typing Trainer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keyboard Jumper Hardcore</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <div id="app">
 
-<div id="app">
+    <!-- HEADER -->
+    <header class="top-bar">
+      <div class="brand">
+        <h1>Keyboard Jumper</h1>
+        <span class="mode">Hardcore Mode</span>
+      </div>
 
-    <!-- MAIN GAME -->
-    <div id="game">
+      <div class="controls">
+        <select id="difficultySelect">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+          <option value="all">All</option>
+        </select>
 
-        <h1 class="title">Neon Typing Hardcore</h1>
-
-        <p id="status">Loading...</p>
-
-        <h2 id="word">---</h2>
-
-        <input id="input" type="text" autocomplete="off" autofocus />
-
-        <!-- DASHBOARD -->
-        <div id="dashboard">
-
-            <div class="panel">
-                <canvas id="wpmChart"></canvas>
-                <p>WPM</p>
-            </div>
-
-            <div class="panel">
-                <canvas id="accChart"></canvas>
-                <p>Accuracy</p>
-            </div>
-
-        </div>
-
-        <!-- WEAK WORDS -->
-        <div id="weakPanel">
-            <h3>Weak Words</h3>
-            <ul id="weakList"></ul>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- SESSION REPORT OVERLAY -->
-<div id="report" class="hidden">
-    <div id="reportBox">
-
-        <h2>Session Report</h2>
-
-        <p id="reportStats"></p>
-
-        <div id="reportWeak">
-            <h3>Weak Words</h3>
-            <ul id="reportWeakList"></ul>
-        </div>
-
+        <button id="startBtn">Start</button>
         <button id="restartBtn">Restart</button>
+      </div>
+    </header>
 
-    </div>
-</div>
+    <!-- DASHBOARD -->
+    <section class="dashboard">
+      <div class="stat">
+        <span class="label">WPM</span>
+        <span id="wpm">0</span>
+      </div>
 
-<script src="script.js"></script>
+      <div class="stat">
+        <span class="label">Accuracy</span>
+        <span id="accuracy">100%</span>
+      </div>
 
+      <div class="stat">
+        <span class="label">Time</span>
+        <span id="time">0s</span>
+      </div>
+
+      <div class="stat">
+        <span class="label">Words</span>
+        <span id="words">0</span>
+      </div>
+
+      <div class="stat danger">
+        <span class="label">Errors</span>
+        <span id="errors">0</span>
+      </div>
+    </section>
+
+    <!-- GAME AREA -->
+    <main class="game-container">
+
+      <div class="word-display">
+        <div id="word" class="word"></div>
+      </div>
+
+      <div class="typing-area">
+        <input
+          id="hiddenInput"
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="progress-bar">
+        <div id="progressFill"></div>
+      </div>
+
+    </main>
+
+    <!-- SESSION REPORT (hidden by default) -->
+    <section id="reportScreen" class="report hidden">
+
+      <h2>Session Complete</h2>
+
+      <div class="report-stats">
+        <p>WPM: <span id="finalWpm"></span></p>
+        <p>Accuracy: <span id="finalAccuracy"></span></p>
+        <p>Time: <span id="finalTime"></span></p>
+        <p>Words Completed: <span id="finalWords"></span></p>
+        <p>Errors: <span id="finalErrors"></span></p>
+      </div>
+
+      <div class="weak-words">
+        <h3>Weak Words</h3>
+        <ul id="weakWordsList"></ul>
+      </div>
+
+      <button id="playAgainBtn">Play Again</button>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
