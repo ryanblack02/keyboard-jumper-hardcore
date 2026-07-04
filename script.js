@@ -84,17 +84,24 @@ class TypingEngine {
   }
 
   init() {
-    this.input.addEventListener("input", (e) => {
-      this.handleInput(e.target.value);
-    });
+  this.input.addEventListener("input", (e) => {
+    this.handleInput(e.target.value);
+  });
 
-    window.addEventListener("keydown", () => {
-      if (this.game.state.status === "running") {
-        this.input.focus();
-      }
-    });
-  }
+  // Always focus input when game is running
+  window.addEventListener("keydown", () => {
+    if (this.game.state.status === "running") {
+      this.input.focus();
+    }
+  });
 
+  // Click anywhere to refocus (Typing.com behavior)
+  window.addEventListener("click", () => {
+    if (this.game.state.status === "running") {
+      this.input.focus();
+    }
+  });
+}
   handleInput(value) {
     const target = this.game.state.currentWord;
 
@@ -188,33 +195,62 @@ class Game {
     this.renderer = new Renderer(this);
     this.typing = new TypingEngine(this);
   }
+   
+   init() {
+  this.wordManager.init();
+  this.typing.init();
 
-  init() {
-    this.wordManager.init();
-    this.typing.init();
+  // Difficulty selector
+  const difficultySelect = document.getElementById("difficultySelect");
 
-    document
-      .getElementById("startBtn")
-      .addEventListener("click", () => this.start());
+  difficultySelect.addEventListener("change", (e) => {
+    this.state.difficulty = e.target.value;
+  });
 
-    document
-      .getElementById("restartBtn")
-      .addEventListener("click", () => this.restart());
+  // Buttons
+  document
+    .getElementById("startBtn")
+    .addEventListener("click", () => this.start());
 
-    this.loop();
-  }
+  document
+    .getElementById("restartBtn")
+    .addEventListener("click", () => this.restart());
+
+  this.loop();
+}
+      
+
+  // Buttons
+  document
+    .getElementById("startBtn")
+    .addEventListener("click", () => this.start());
+
+  document
+    .getElementById("restartBtn")
+    .addEventListener("click", () => this.restart());
+
+  this.loop();
+}
 
   start() {
-    this.state.status = "running";
-    this.state.sessionStart = Date.now();
+  this.state.reset();
 
-    this.nextWord();
-  }
+  this.state.status = "running";
+  this.state.sessionStart = Date.now();
+
+  this.nextWord();
+
+  // force immediate UI update
+  this.renderer.render();
+}
+
+  // force immediate UI update
+  this.renderer.render();
+}
 
   restart() {
-    this.state.reset();
-    this.start();
-  }
+  this.start();
+}
 
   nextWord() {
     const word = this.wordManager.getNextWord(this.state.difficulty);
