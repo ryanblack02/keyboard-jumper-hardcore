@@ -1,171 +1,254 @@
-// ===============================
-// NEON TYPING TRAINER
-// WITH SESSION REPORT SCREEN
-// ===============================
+"use strict";
 
-// DOM
-const wordEl = document.getElementById("word");
-const inputEl = document.getElementById("input");
-const statusEl = document.getElementById("status");
+/* =========================
+   GAME STATE
+========================= */
+class GameState {
+  constructor() {
+    this.status = "idle"; // idle | running | gameover
+    this.currentWord = "";
+    this.typed = "";
+    this.difficulty = "easy";
 
-const reportEl = document.getElementById("report");
-const reportStatsEl = document.getElementById("reportStats");
-const reportWeakList = document.getElementById("reportWeakList");
-const restartBtn = document.getElementById("restartBtn");
+    this.sessionStart = null;
 
-// STATE
-let allWords = [];
-let currentWord = "";
-let typed = "";
-let gameOver = false;
+    this.errors = 0;
+    this.wordsCompleted = 0;
+  }
 
-// STATS
-let startTime = Date.now();
-let correctWords = 0;
-let totalWords = 0;
-let errorCount = 0;
-
-// DATA TRACKING
-let wpmHistory = [];
-let accHistory = [];
-
-const wordStats = {};
-let recentWords = [];
-
-// ===============================
-// LOAD WORDS
-// ===============================
-fetch("https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english.txt")
-    .then(r => r.text())
-    .then(text => {
-
-        allWords = text
-            .split("\n")
-            .map(w => w.trim().toLowerCase())
-            .filter(w => /^[a-z]+$/.test(w));
-
-        start();
-    });
-
-// ===============================
-function start() {
-    gameOver = false;
-
-    startTime = Date.now();
-    correctWords = 0;
-    totalWords = 0;
-    errorCount = 0;
-
-    wpmHistory = [];
-    accHistory = [];
-    recentWords = [];
-
-    reportEl.classList.add("hidden");
-
-    statusEl.textContent = "Training Session Active";
-    inputEl.value = "";
-    inputEl.focus();
-
-    nextWord();
+  reset() {
+    this.status = "idle";
+    this.currentWord = "";
+    this.typed = "";
+    this.sessionStart = null;
+    this.errors = 0;
+    this.wordsCompleted = 0;
+  }
 }
 
-// ===============================
-// WORD PICKER
-// ===============================
-function getWord() {
-    const word = allWords[Math.floor(Math.random() * allWords.length)];
+/* =========================
+   WORD MANAGER
+========================= */
+class WordManager {
+  constructor(words) {
+    this.words = words;
+
+    this.index = {
+      easy: [],
+      medium: [],
+      hard: [],
+      all: []
+    };
+
+    this.recentWords = [];
+    this.maxHistory = 20;
+  }
+
+  init() {
+    for (const w of this.words) {
+      this.index[w.difficulty].push(w.word);
+      this.index.all.push(w.word);
+    }
+  }
+
+  getPool(difficulty) {
+    return this.index[difficulty] || this.index.all;
+  }
+
+  getNextWord(difficulty) {
+    const pool = this.getPool(difficulty);
+
+    let word;
+
+    do {
+      word = pool[Math.floor(Math.random() * pool.length)];
+    } while (this.recentWords.includes(word));
+
+    this.recentWords.push(word);
+
+    if (this.recentWords.length > this.maxHistory) {
+      this.recentWords.shift();
+    }
+
     return word;
+  }
 }
 
-// ===============================
-function nextWord() {
-    currentWord = getWord();
-    typed = "";
+/* =========================
+   TYPING ENGINE
+========================= */
+class TypingEngine {
+  constructor(game) {
+    this.game = game;
+    this.input = document.getElementById("hiddenInput");
+  }
 
-    wordEl.textContent = currentWord;
-    inputEl.value = "";
-    inputEl.focus();
-
-    updateStats();
-}
-
-// ===============================
-// STATS
-// ===============================
-function getWPM() {
-    const min = (Date.now() - startTime) / 60000;
-    return min > 0 ? Math.round(correctWords / min) : 0;
-}
-
-function getACC() {
-    return totalWords > 0
-        ? Math.round((correctWords / totalWords) * 100)
-        : 100;
-}
-
-// ===============================
-// INPUT
-// ===============================
-inputEl.addEventListener("input", () => {
-    if (gameOver) return;
-
-    typed = inputEl.value;
-
-    if (!currentWord.startsWith(typed)) {
-        errorCount++;
-
-        wordStats[currentWord] =
-            (wordStats[currentWord] || 0) + 1;
-
-        endSession();
-        return;
-    }
-
-    if (typed === currentWord) {
-        totalWords++;
-        correctWords++;
-
-        setTimeout(nextWord, 50);
-    }
-
-    updateStats();
-});
-
-// ===============================
-// END SESSION → SHOW REPORT
-// ===============================
-function endSession() {
-    gameOver = true;
-
-    const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-
-    const weakWords = Object.entries(wordStats)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
-
-    // STATS TEXT
-    reportStatsEl.textContent =
-        `WPM: ${getWPM()} | ACC: ${getACC()}% | TIME: ${duration}s | ERR: ${errorCount}`;
-
-    // WEAK WORDS LIST
-    reportWeakList.innerHTML = "";
-    weakWords.forEach(([word, count]) => {
-        const li = document.createElement("li");
-        li.textContent = `${word} (${count})`;
-        reportWeakList.appendChild(li);
+  init() {
+    this.input.addEventListener("input", (e) => {
+      this.handleInput(e.target.value);
     });
 
-    // SHOW REPORT
-    reportEl.classList.remove("hidden");
+    window.addEventListener("keydown", () => {
+      if (this.game.state.status === "running") {
+        this.input.focus();
+      }
+    });
+  }
+
+  handleInput(value) {
+    const target = this.game.state.currentWord;
+
+    // store typed value
+    this.game.state.typed = value;
+
+    // HARDCORE RULE: instant fail on mismatch
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] !== target[i]) {
+        this.game.fail();
+        return;
+      }
+    }
+
+    // word completed
+    if (value === target) {
+      this.game.completeWord();
+      this.input.value = "";
+    }
+  }
 }
 
-// ===============================
-// RESTART BUTTON
-// ===============================
-restartBtn.addEventListener("click", start);
+/* =========================
+   STATS ENGINE
+========================= */
+class StatsEngine {
+  constructor(state) {
+    this.state = state;
+  }
 
-// ===============================
-function updateStats() {
-    statusEl.textContent =
-        `WPM: ${getWPM()} | ACC: ${getACC()}% | ERR: ${errorCount}`;
+  getTimeSeconds() {
+    if (!this.state.sessionStart) return 0;
+    return Math.floor((Date.now() - this.state.sessionStart) / 1000);
+  }
+
+  getWPM() {
+    const minutes = this.getTimeSeconds() / 60;
+    if (minutes === 0) return 0;
+    return Math.round(this.state.wordsCompleted / minutes);
+  }
+
+  getAccuracy() {
+    const total =
+      this.state.wordsCompleted + this.state.errors;
+
+    if (total === 0) return 100;
+    return Math.round((this.state.wordsCompleted / total) * 100);
+  }
 }
+
+/* =========================
+   RENDERER
+========================= */
+class Renderer {
+  constructor(game) {
+    this.game = game;
+
+    this.wordEl = document.getElementById("word");
+
+    this.wpmEl = document.getElementById("wpm");
+    this.accEl = document.getElementById("accuracy");
+    this.timeEl = document.getElementById("time");
+    this.wordsEl = document.getElementById("words");
+    this.errEl = document.getElementById("errors");
+  }
+
+  render() {
+    const state = this.game.state;
+    const stats = this.game.stats;
+
+    // word display
+    this.wordEl.textContent = state.currentWord;
+
+    // dashboard
+    this.wpmEl.textContent = stats.getWPM();
+    this.accEl.textContent = stats.getAccuracy() + "%";
+    this.timeEl.textContent = stats.getTimeSeconds() + "s";
+    this.wordsEl.textContent = state.wordsCompleted;
+    this.errEl.textContent = state.errors;
+  }
+}
+
+/* =========================
+   MAIN GAME CONTROLLER
+========================= */
+class Game {
+  constructor(words) {
+    this.state = new GameState();
+    this.wordManager = new WordManager(words);
+    this.stats = new StatsEngine(this.state);
+    this.renderer = new Renderer(this);
+    this.typing = new TypingEngine(this);
+  }
+
+  init() {
+    this.wordManager.init();
+    this.typing.init();
+
+    document
+      .getElementById("startBtn")
+      .addEventListener("click", () => this.start());
+
+    document
+      .getElementById("restartBtn")
+      .addEventListener("click", () => this.restart());
+
+    this.loop();
+  }
+
+  start() {
+    this.state.status = "running";
+    this.state.sessionStart = Date.now();
+
+    this.nextWord();
+  }
+
+  restart() {
+    this.state.reset();
+    this.start();
+  }
+
+  nextWord() {
+    const word = this.wordManager.getNextWord(this.state.difficulty);
+
+    this.state.currentWord = word;
+    this.state.typed = "";
+  }
+
+  completeWord() {
+    this.state.wordsCompleted++;
+    this.nextWord();
+  }
+
+  fail() {
+    this.state.errors++;
+    this.state.status = "gameover";
+
+    alert("Game Over!");
+    this.state.reset();
+  }
+
+  loop() {
+    setInterval(() => {
+      this.renderer.render();
+    }, 50);
+  }
+}
+
+/* =========================
+   BOOTSTRAP
+========================= */
+fetch("words.json")
+  .then(res => res.json())
+  .then(words => {
+    const game = new Game(words);
+    game.init();
+  });
