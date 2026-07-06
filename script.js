@@ -167,17 +167,43 @@ class Renderer {
   }
 
   render() {
-    const state = this.game.state;
-    const stats = this.game.stats;
+  const state = this.game.state;
+  const stats = this.game.stats;
 
-    this.wordEl.textContent = state.currentWord;
+  this.renderWord(state.currentWord, state.typed);
 
-    this.wpmEl.textContent = stats.getWPM();
-    this.accEl.textContent = stats.getAccuracy() + "%";
-    this.timeEl.textContent = stats.getTimeSeconds() + "s";
-    this.wordsEl.textContent = state.wordsCompleted;
-    this.errEl.textContent = state.errors;
+  this.wpmEl.textContent = stats.getWPM();
+  this.accEl.textContent = stats.getAccuracy() + "%";
+  this.timeEl.textContent = stats.getTimeSeconds() + "s";
+  this.wordsEl.textContent = state.wordsCompleted;
+  this.errEl.textContent = state.errors;
+}
+
+renderWord(word, typed) {
+  if (!word) {
+    this.wordEl.textContent = "";
+    return;
   }
+
+  this.wordEl.innerHTML = "";
+
+  [...word].forEach((letter, index) => {
+    const span = document.createElement("span");
+
+    span.textContent = letter;
+
+    if (index < typed.length) {
+      if (typed[index] === letter) {
+        span.classList.add("correct");
+      } else {
+        span.classList.add("wrong");
+      }
+    } else if (index === typed.length) {
+      span.classList.add("current");
+    }
+
+    this.wordEl.appendChild(span);
+  });
 }
 
 /* =========================
