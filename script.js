@@ -5,7 +5,7 @@
 ========================= */
 class GameState {
   constructor() {
-    this.status = "idle"; // idle | running | gameover
+    this.status = "idle";
     this.currentWord = "";
     this.typed = "";
     this.difficulty = "easy";
@@ -46,7 +46,9 @@ class WordManager {
 
   init() {
     for (const w of this.words) {
-      this.index[w.difficulty].push(w.word);
+      if (this.index[w.difficulty]) {
+        this.index[w.difficulty].push(w.word);
+      }
       this.index.all.push(w.word);
     }
   }
@@ -84,31 +86,28 @@ class TypingEngine {
   }
 
   init() {
-  this.input.addEventListener("input", (e) => {
-    this.handleInput(e.target.value);
-  });
+    this.input.addEventListener("input", (e) => {
+      this.handleInput(e.target.value);
+    });
 
-  // Always focus input when game is running
-  window.addEventListener("keydown", () => {
-    if (this.game.state.status === "running") {
-      this.input.focus();
-    }
-  });
+    window.addEventListener("keydown", () => {
+      if (this.game.state.status === "running") {
+        this.input.focus();
+      }
+    });
 
-  // Click anywhere to refocus (Typing.com behavior)
-  window.addEventListener("click", () => {
-    if (this.game.state.status === "running") {
-      this.input.focus();
-    }
-  });
-}
+    window.addEventListener("click", () => {
+      if (this.game.state.status === "running") {
+        this.input.focus();
+      }
+    });
+  }
+
   handleInput(value) {
     const target = this.game.state.currentWord;
 
-    // store typed value
     this.game.state.typed = value;
 
-    // HARDCORE RULE: instant fail on mismatch
     for (let i = 0; i < value.length; i++) {
       if (value[i] !== target[i]) {
         this.game.fail();
@@ -116,7 +115,6 @@ class TypingEngine {
       }
     }
 
-    // word completed
     if (value === target) {
       this.game.completeWord();
       this.input.value = "";
@@ -144,9 +142,7 @@ class StatsEngine {
   }
 
   getAccuracy() {
-    const total =
-      this.state.wordsCompleted + this.state.errors;
-
+    const total = this.state.wordsCompleted + this.state.errors;
     if (total === 0) return 100;
     return Math.round((this.state.wordsCompleted / total) * 100);
   }
@@ -172,10 +168,8 @@ class Renderer {
     const state = this.game.state;
     const stats = this.game.stats;
 
-    // word display
     this.wordEl.textContent = state.currentWord;
 
-    // dashboard
     this.wpmEl.textContent = stats.getWPM();
     this.accEl.textContent = stats.getAccuracy() + "%";
     this.timeEl.textContent = stats.getTimeSeconds() + "s";
@@ -185,7 +179,7 @@ class Renderer {
 }
 
 /* =========================
-   MAIN GAME CONTROLLER
+   GAME CONTROLLER
 ========================= */
 class Game {
   constructor(words) {
@@ -195,62 +189,40 @@ class Game {
     this.renderer = new Renderer(this);
     this.typing = new TypingEngine(this);
   }
-   
-   init() {
-  this.wordManager.init();
-  this.typing.init();
 
-  // Difficulty selector
-  const difficultySelect = document.getElementById("difficultySelect");
+  init() {
+    this.wordManager.init();
+    this.typing.init();
 
-  difficultySelect.addEventListener("change", (e) => {
-    this.state.difficulty = e.target.value;
-  });
+    const difficultySelect = document.getElementById("difficultySelect");
 
-  // Buttons
-  document
-    .getElementById("startBtn")
-    .addEventListener("click", () => this.start());
+    difficultySelect.addEventListener("change", (e) => {
+      this.state.difficulty = e.target.value;
+    });
 
-  document
-    .getElementById("restartBtn")
-    .addEventListener("click", () => this.restart());
+    document.getElementById("startBtn")
+      .addEventListener("click", () => this.start());
 
-  this.loop();
-}
-      
+    document.getElementById("restartBtn")
+      .addEventListener("click", () => this.restart());
 
-  // Buttons
-  document
-    .getElementById("startBtn")
-    .addEventListener("click", () => this.start());
-
-  document
-    .getElementById("restartBtn")
-    .addEventListener("click", () => this.restart());
-
-  this.loop();
-}
+    this.loop();
+  }
 
   start() {
-  this.state.reset();
+    this.state.reset();
 
-  this.state.status = "running";
-  this.state.sessionStart = Date.now();
+    this.state.status = "running";
+    this.state.sessionStart = Date.now();
 
-  this.nextWord();
+    this.nextWord();
 
-  // force immediate UI update
-  this.renderer.render();
-}
-
-  // force immediate UI update
-  this.renderer.render();
-}
+    this.renderer.render();
+  }
 
   restart() {
-  this.start();
-}
+    this.start();
+  }
 
   nextWord() {
     const word = this.wordManager.getNextWord(this.state.difficulty);
@@ -283,8 +255,19 @@ class Game {
    BOOTSTRAP
 ========================= */
 fetch("words.json")
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Failed to load words.json");
+    return res.json();
+  })
   .then(words => {
+    console.log("Words loaded:", words.length);
+
     const game = new Game(words);
+    window.__game = game;
+
     game.init();
+  })
+  .catch(err => {
+    console.error("Game failed:", err);
+    alert("Failed to load words.json — check console.");
   });
