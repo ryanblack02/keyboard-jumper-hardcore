@@ -104,6 +104,9 @@ class TypingEngine {
   }
 
   handleInput(value) {
+     console.log("Typed:", value);
+     console.log("Target:", this.game.state.currentWord);
+     
     const target = this.game.state.currentWord;
 
     this.game.state.typed = value;
