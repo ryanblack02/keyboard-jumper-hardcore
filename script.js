@@ -82,32 +82,31 @@ class WordManager {
 class TypingEngine {
   constructor(game) {
     this.game = game;
-    this.input = document.getElementById("hiddenInput");
+    this.typed = "";
   }
 
   init() {
-    this.input.addEventListener("input", (e) => {
-      this.handleInput(e.target.value);
-    });
-
-    window.addEventListener("keydown", () => {
-      if (this.game.state.status === "running") {
-        this.input.focus();
+    window.addEventListener("keydown", (e) => {
+      if (this.game.state.status !== "running") {
+        return;
       }
-    });
 
-    window.addEventListener("click", () => {
-      if (this.game.state.status === "running") {
-        this.input.focus();
+      // Ignore special keys
+      if (e.key.length !== 1) {
+        return;
       }
+
+      this.typed += e.key;
+
+      this.handleInput(this.typed);
     });
   }
 
   handleInput(value) {
-     console.log("Typed:", value);
-     console.log("Target:", this.game.state.currentWord);
-     
     const target = this.game.state.currentWord;
+
+    console.log("Typed:", value);
+    console.log("Target:", target);
 
     this.game.state.typed = value;
 
@@ -120,7 +119,7 @@ class TypingEngine {
 
     if (value === target) {
       this.game.completeWord();
-      this.input.value = "";
+      this.typed = "";
     }
   }
 }
