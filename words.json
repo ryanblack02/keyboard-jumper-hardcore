@@ -298,7 +298,7 @@
   {"word":"related","difficulty":"medium"},
   {"word":"security","difficulty":"hard"},
   {"word":"both","difficulty":"easy"},
-  {"word":"g","difficulty":"easy"}
+  {"word":"g","difficulty":"easy"},
   {"word":"county","difficulty":"medium"},
   {"word":"american","difficulty":"medium"},
   {"word":"photo","difficulty":"easy"},
@@ -597,7 +597,7 @@
   {"word":"texas","difficulty":"medium"},
   {"word":"oct","difficulty":"easy"},
   {"word":"pay","difficulty":"easy"},
-  {"word":"four","difficulty":"easy"}
+  {"word":"four","difficulty":"easy"},
   {"word":"poker","difficulty":"medium"},
   {"word":"status","difficulty":"medium"},
   {"word":"browse","difficulty":"medium"},
@@ -897,7 +897,7 @@
   {"word":"camera","difficulty":"medium"},
   {"word":"jun","difficulty":"easy"},
   {"word":"girl","difficulty":"easy"},
-  {"word":"currently","difficulty":"hard"}
+  {"word":"currently","difficulty":"hard"},
   { "word": "construction", "difficulty": "hard" },
   { "word": "toys", "difficulty": "easy" },
   { "word": "registered", "difficulty": "hard" },
@@ -1197,7 +1197,7 @@
   { "word": "fund", "difficulty": "easy" },
   { "word": "summer", "difficulty": "easy" },
   { "word": "allow", "difficulty": "easy" },
-  { "word": "degree", "difficulty": "medium" }
+  { "word": "degree", "difficulty": "medium" },
   {"word":"contract","difficulty":"medium"},
   {"word":"button","difficulty":"easy"},
   {"word":"releases","difficulty":"hard"},
@@ -1497,7 +1497,7 @@
   {"word":"vacation","difficulty":"hard"},
   {"word":"century","difficulty":"medium"},
   {"word":"academic","difficulty":"hard"},
-  {"word":"assistance","difficulty":"hard"}
+  {"word":"assistance","difficulty":"hard"},
   {"word":"completed","difficulty":"hard"},
   {"word":"skin","difficulty":"easy"},
   {"word":"graphics","difficulty":"hard"},
@@ -1797,7 +1797,7 @@
   {"word":"royal","difficulty":"easy"},
   {"word":"clean","difficulty":"easy"},
   {"word":"switch","difficulty":"medium"},
-  {"word":"russian","difficulty":"medium"}
+  {"word":"russian","difficulty":"medium"},
   { "word": "largest", "difficulty": "medium" },
   { "word": "african", "difficulty": "medium" },
   { "word": "guy", "difficulty": "easy" },
@@ -2097,7 +2097,7 @@
   { "word": "louis", "difficulty": "medium" },
   { "word": "steps", "difficulty": "easy" },
   { "word": "errors", "difficulty": "medium" },
-  { "word": "shops", "difficulty": "easy" }
+  { "word": "shops", "difficulty": "easy" },
   { "word": "del", "difficulty": "easy" },
   { "word": "efforts", "difficulty": "medium" },
   { "word": "informed", "difficulty": "hard" },
@@ -2397,7 +2397,7 @@
   { "word": "hr", "difficulty": "easy" },
   { "word": "em", "difficulty": "easy" },
   { "word": "advantage", "difficulty": "hard" },
-  { "word": "hello", "difficulty": "easy" }
+  { "word": "hello", "difficulty": "easy" },
   { "word": "designs", "difficulty": "medium" },
   { "word": "maintain", "difficulty": "hard" },
   { "word": "tourism", "difficulty": "medium" },
@@ -2697,7 +2697,7 @@
   { "word": "writer", "difficulty": "medium" },
   { "word": "chairman", "difficulty": "hard" },
   { "word": "violence", "difficulty": "hard" },
-  { "word": "fans", "difficulty": "easy" }
+  { "word": "fans", "difficulty": "easy" },
   { "word": "oklahoma", "difficulty": "medium" },
   { "word": "speakers", "difficulty": "medium" },
   { "word": "drink", "difficulty": "easy" },
@@ -2897,7 +2897,7 @@
   { "word": "interior", "difficulty": "hard" },
   { "word": "revised", "difficulty": "medium" },
   { "word": "grow", "difficulty": "easy" },
-  { "word": "americans", "difficulty": "hard" }
+  { "word": "americans", "difficulty": "hard" },
   { "word": "optical", "difficulty": "medium" },
   { "word": "promotion", "difficulty": "hard" },
   { "word": "relative", "difficulty": "medium" },
@@ -3197,7 +3197,7 @@
   { "word": "respond", "difficulty": "medium" },
   { "word": "sizes", "difficulty": "easy" },
   { "word": "plain", "difficulty": "easy" },
-  { "word": "exit", "difficulty": "easy" }
+  { "word": "exit", "difficulty": "easy" },
   { "word": "entered", "difficulty": "medium" },
   { "word": "iran", "difficulty": "easy" },
   { "word": "arm", "difficulty": "easy" },
@@ -3497,7 +3497,7 @@
   { "word": "publishers", "difficulty": "hard" },
   { "word": "nights", "difficulty": "easy" },
   { "word": "behalf", "difficulty": "medium" },
-  { "word": "caribbean", "difficulty": "hard" }
+  { "word": "caribbean", "difficulty": "hard" },
   { "word": "liquid", "difficulty": "medium" },
   { "word": "rice", "difficulty": "easy" },
   { "word": "nebraska", "difficulty": "medium" },
@@ -3797,7 +3797,7 @@
   { "word": "holds", "difficulty": "easy" },
   { "word": "router", "difficulty": "medium" },
   { "word": "concrete", "difficulty": "medium" },
-  { "word": "si", "difficulty": "easy" }
+  { "word": "si", "difficulty": "easy" },
   { "word": "editing", "difficulty": "medium" },
   { "word": "poland", "difficulty": "medium" },
   { "word": "folder", "difficulty": "easy" },
@@ -3897,7 +3897,7 @@
   { "word": "employers", "difficulty": "hard" },
   { "word": "grey", "difficulty": "easy" },
   { "word": "parallel", "difficulty": "hard" },
-  { "word": "honda", "difficulty": "easy" }
+  { "word": "honda", "difficulty": "easy" },
   { "word": "amended", "difficulty": "medium" },
   { "word": "operate", "difficulty": "medium" },
   { "word": "bills", "difficulty": "easy" },
@@ -4197,7 +4197,7 @@
   { "word": "cake", "difficulty": "easy" },
   { "word": "notebooks", "difficulty": "hard" },
   { "word": "apart", "difficulty": "easy" },
-  { "word": "fellow", "difficulty": "medium" }
+  { "word": "fellow", "difficulty": "medium" },
   { "word": "blind", "difficulty": "easy" },
   { "word": "lounge", "difficulty": "medium" },
   { "word": "mad", "difficulty": "easy" },
@@ -4497,7 +4497,7 @@
   { "word": "memories", "difficulty": "medium" },
   { "word": "nelson", "difficulty": "easy" },
   { "word": "te", "difficulty": "easy" },
-  { "word": "arrived", "difficulty": "medium" }
+  { "word": "arrived", "difficulty": "medium" },
   {"word":"creates","difficulty":"easy"},
   {"word":"faces","difficulty":"easy"},
   {"word":"tourist","difficulty":"easy"},
@@ -4797,7 +4797,7 @@
   {"word":"broker","difficulty":"easy"},
   {"word":"charger","difficulty":"medium"},
   {"word":"regularly","difficulty":"easy"},
-  {"word":"believed","difficulty":"easy"}
+  {"word":"believed","difficulty":"easy"},
   {"word":"pine","difficulty":"easy"},
   {"word":"cooling","difficulty":"easy"},
   {"word":"tend","difficulty":"easy"},
@@ -4897,7 +4897,7 @@
   {"word":"solve","difficulty":"easy"},
   {"word":"shorts","difficulty":"easy"},
   {"word":"reproduction","difficulty":"medium"},
-  {"word":"minority","difficulty":"easy"}
+  {"word":"minority","difficulty":"easy"},
   { "word": "td", "difficulty": "easy" },
   { "word": "diverse", "difficulty": "medium" },
   { "word": "amp", "difficulty": "easy" },
@@ -5097,7 +5097,7 @@
   { "word": "egg", "difficulty": "easy" },
   { "word": "mhz", "difficulty": "medium" },
   { "word": "signals", "difficulty": "medium" },
-  { "word": "caps", "difficulty": "easy" }
+  { "word": "caps", "difficulty": "easy" },
   {"word":"orientation","difficulty":"medium"},
   {"word":"pill","difficulty":"easy"},
   {"word":"theft","difficulty":"easy"},
@@ -5197,7 +5197,7 @@
   {"word":"ae","difficulty":"hard"},
   {"word":"triple","difficulty":"easy"},
   {"word":"cooper","difficulty":"medium"},
-  {"word":"nyc","difficulty":"medium"}
+  {"word":"nyc","difficulty":"medium"},
   {"word":"vincent","difficulty":"medium"},
   {"word":"jam","difficulty":"easy"},
   {"word":"secured","difficulty":"easy"},
@@ -5397,7 +5397,7 @@
   {"word":"mx","difficulty":"hard"},
   {"word":"sigma","difficulty":"medium"},
   {"word":"gr","difficulty":"hard"},
-  {"word":"attractive","difficulty":"easy"}
+  {"word":"attractive","difficulty":"easy"},
   { "word": "xhtml", "difficulty": "hard" },
   { "word": "occasion", "difficulty": "medium" },
   { "word": "recordings", "difficulty": "medium" },
@@ -5597,7 +5597,7 @@
   { "word": "tu", "difficulty": "easy" },
   { "word": "fy", "difficulty": "medium" },
   { "word": "thumbs", "difficulty": "medium" },
-  { "word": "seeds", "difficulty": "easy" }
+  { "word": "seeds", "difficulty": "easy" },
   { "word": "cited", "difficulty": "easy" },
   { "word": "lite", "difficulty": "easy" },
   { "word": "ghz", "difficulty": "hard" },
@@ -5897,7 +5897,7 @@
   { "word": "anymore", "difficulty": "easy" },
   { "word": "oclc", "difficulty": "hard" },
   { "word": "delhi", "difficulty": "easy" },
-  { "word": "holdings", "difficulty": "medium" }
+  { "word": "holdings", "difficulty": "medium" },
   { "word": "alien", "difficulty": "easy" },
   { "word": "locator", "difficulty": "easy" },
   { "word": "selecting", "difficulty": "medium" },
@@ -6197,7 +6197,7 @@
   { "word": "surgical", "difficulty": "medium" },
   { "word": "destroy", "difficulty": "easy" },
   { "word": "citation", "difficulty": "medium" },
-  { "word": "pitch", "difficulty": "easy" }
+  { "word": "pitch", "difficulty": "easy" },
   { "word": "autos", "difficulty": "easy" },
   { "word": "yo", "difficulty": "easy" },
   { "word": "premises", "difficulty": "medium" },
@@ -6497,7 +6497,7 @@
   { "word": "lc", "difficulty": "easy" },
   { "word": "ferry", "difficulty": "medium" },
   { "word": "rabbit", "difficulty": "medium" },
-  { "word": "profession", "difficulty": "medium" }
+  { "word": "profession", "difficulty": "medium" },
   { "word": "seating", "difficulty": "easy" },
   { "word": "dam", "difficulty": "easy" },
   { "word": "cnn", "difficulty": "easy" },
@@ -6797,7 +6797,7 @@
   { "word": "confused", "difficulty": "easy" },
   { "word": "compiler", "difficulty": "hard" },
   { "word": "enlargement", "difficulty": "hard" },
-  { "word": "eagles", "difficulty": "easy" }
+  { "word": "eagles", "difficulty": "easy" },
   { "word": "bases", "difficulty": "easy" },
   { "word": "vii", "difficulty": "easy" },
   { "word": "accused", "difficulty": "medium" },
@@ -7097,7 +7097,7 @@
   { "word": "myers", "difficulty": "easy" },
   { "word": "drops", "difficulty": "easy" },
   { "word": "predicted", "difficulty": "medium" },
-  { "word": "wider", "difficulty": "easy" }
+  { "word": "wider", "difficulty": "easy" },
   { "word": "saskatchewan", "difficulty": "hard" },
   { "word": "jc", "difficulty": "easy" },
   { "word": "cancellation", "difficulty": "medium" },
@@ -7397,7 +7397,7 @@
   { "word": "respiratory", "difficulty": "hard" },
   { "word": "notifications", "difficulty": "hard" },
   { "word": "msgid", "difficulty": "hard" },
-  { "word": "transexual", "difficulty": "hard" }
+  { "word": "transexual", "difficulty": "hard" },
   { "word": "mainstream", "difficulty": "medium" },
   { "word": "invoice", "difficulty": "easy" },
   { "word": "evaluating", "difficulty": "medium" },
@@ -7697,7 +7697,7 @@
   { "word": "belarus", "difficulty": "medium" },
   { "word": "nat", "difficulty": "easy" },
   { "word": "zoning", "difficulty": "medium" },
-  { "word": "gravity", "difficulty": "easy" }
+  { "word": "gravity", "difficulty": "easy" },
   { "word": "providence", "difficulty": "medium" },
   { "word": "thumb", "difficulty": "easy" },
   { "word": "restriction", "difficulty": "medium" },
@@ -7996,7 +7996,7 @@
   { "word": "excessive", "difficulty": "medium" },
   { "word": "devon", "difficulty": "easy" },
   { "word": "screensaver", "difficulty": "hard" },
-  { "word": "saves", "difficulty": "easy" }
+  { "word": "saves", "difficulty": "easy" },
   { "word": "regarded", "difficulty": "medium" },
   { "word": "valuation", "difficulty": "hard" },
   { "word": "unexpected", "difficulty": "medium" },
@@ -8297,7 +8297,7 @@
   { "word": "thoroughly", "difficulty": "medium" },
   { "word": "antigua", "difficulty": "easy" },
   { "word": "nottingham", "difficulty": "medium" },
-  { "word": "thunder", "difficulty": "easy" }
+  { "word": "thunder", "difficulty": "easy" },
   { "word": "tent", "difficulty": "easy" },
   { "word": "caution", "difficulty": "easy" },
   { "word": "identifies", "difficulty": "medium" },
@@ -8597,7 +8597,7 @@
   { "word": "rays", "difficulty": "easy" },
   { "word": "asn", "difficulty": "medium" },
   { "word": "shannon", "difficulty": "easy" },
-  { "word": "toddler", "difficulty": "easy" }
+  { "word": "toddler", "difficulty": "easy" },
   { "word": "enhancing", "difficulty": "medium" },
   { "word": "flavor", "difficulty": "easy" },
   { "word": "alike", "difficulty": "easy" },
@@ -8797,7 +8797,7 @@
   { "word": "framing", "difficulty": "medium" },
   { "word": "musician", "difficulty": "easy" },
   { "word": "blocking", "difficulty": "easy" },
-  { "word": "rwanda", "difficulty": "easy" }
+  { "word": "rwanda", "difficulty": "easy" },
   { "word": "sorts", "difficulty": "easy" },
   { "word": "integrating", "difficulty": "medium" },
   { "word": "vsnet", "difficulty": "hard" },
@@ -9197,7 +9197,7 @@
   { "word": "necessity", "difficulty": "easy" },
   { "word": "rendering", "difficulty": "medium" },
   { "word": "mic", "difficulty": "easy" },
-  { "word": "inserted", "difficulty": "easy" }
+  { "word": "inserted", "difficulty": "easy" },
   { "word": "pulling", "difficulty": "easy" },
   { "word": "basename", "difficulty": "hard" },
   { "word": "kyle", "difficulty": "easy" },
@@ -9497,7 +9497,7 @@
   { "word": "feat", "difficulty": "easy" },
   { "word": "temporarily", "difficulty": "medium" },
   { "word": "ntsc", "difficulty": "medium" },
-  { "word": "cooked", "difficulty": "easy" }
+  { "word": "cooked", "difficulty": "easy" },
   { "word": "thriller", "difficulty": "easy" },
   { "word": "transmit", "difficulty": "medium" },
   { "word": "apnic", "difficulty": "hard" },
@@ -9797,7 +9797,7 @@
   { "word": "assembled", "difficulty": "easy" },
   { "word": "earliest", "difficulty": "easy" },
   { "word": "donated", "difficulty": "easy" },
-  { "word": "stuffed", "difficulty": "easy" }
+  { "word": "stuffed", "difficulty": "easy" },
   { "word": "restructuring", "difficulty": "medium" },
   { "word": "insects", "difficulty": "easy" },
   { "word": "terminals", "difficulty": "medium" },
