@@ -232,3 +232,22 @@ select:hover {
     text-align: center;
   }
 }
+
+.word span {
+  transition: 0.15s ease;
+}
+
+.word .correct {
+  color: #00ff99;
+  text-shadow: 0 0 10px #00ff99;
+}
+
+.word .wrong {
+  color: #ff3366;
+  text-shadow: 0 0 10px #ff3366;
+}
+
+.word .current {
+  color: #00ccff;
+  text-shadow: 0 0 15px #00ccff;
+}
