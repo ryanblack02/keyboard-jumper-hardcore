@@ -178,13 +178,31 @@ console.log({
 }
 
 render() {
+  render() {
   const state = this.game.state;
   const stats = this.game.stats;
 
-  console.log("Rendering...");
-  console.log("State:", state);
-  console.log("Height element:", this.heightEl);
+  this.renderWord(state.currentWord, state.typed);
+  this.renderProgress(state.currentWord, state.typed);
 
+  console.log("Updating WPM");
+  this.wpmEl.textContent = stats.getWPM();
+
+  console.log("Updating Accuracy");
+  this.accEl.textContent = stats.getAccuracy() + "%";
+
+  console.log("Updating Time");
+  this.timeEl.textContent = stats.getTimeSeconds() + "s";
+
+  console.log("Updating Words");
+  this.wordsEl.textContent = state.wordsCompleted;
+
+  console.log("Updating Errors");
+  this.errEl.textContent = state.errors;
+
+  console.log("Updating Height");
+  this.heightEl.textContent = state.height + "m";
+}
   this.renderWord(state.currentWord, state.typed);
   this.renderProgress(state.currentWord, state.typed);
 
