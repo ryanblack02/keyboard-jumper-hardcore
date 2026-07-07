@@ -251,3 +251,26 @@ select:hover {
   color: #00ccff;
   text-shadow: 0 0 15px #00ccff;
 }
+
+/* =========================
+   JUMP EFFECT
+========================= */
+
+.word.jump {
+  animation: jumpEffect 0.35s ease;
+}
+
+@keyframes jumpEffect {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-25px) scale(1.15);
+    text-shadow: 0 0 30px var(--success);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
