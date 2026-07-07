@@ -9881,5 +9881,6 @@
   { "word": "arbor", "difficulty": "easy" },
   { "word": "mediawiki", "difficulty": "medium" },
   { "word": "configurations", "difficulty": "medium" },
-  { "word": "poison", "difficulty": "easy" }
+  { "word": "poison", "difficulty": "easy" },
+  {"word": "territoriality", "difficulty": "hard"}
 ]
