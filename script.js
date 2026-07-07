@@ -14,16 +14,18 @@ class GameState {
 
     this.errors = 0;
     this.wordsCompleted = 0;
+    this.height = 0;
   }
 
   reset() {
-    this.status = "idle";
-    this.currentWord = "";
-    this.typed = "";
-    this.sessionStart = null;
-    this.errors = 0;
-    this.wordsCompleted = 0;
-  }
+  this.status = "idle";
+  this.currentWord = "";
+  this.typed = "";
+  this.sessionStart = null;
+  this.errors = 0;
+  this.wordsCompleted = 0;
+  this.height = 0;
+}
 }
 
 /* =========================
