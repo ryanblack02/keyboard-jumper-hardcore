@@ -119,8 +119,7 @@ class TypingEngine {
     if (value === target) {
   this.game.completeWord();
 }
-    }
-  }
+}
 }
 
 /* =========================
