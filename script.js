@@ -82,7 +82,6 @@ class WordManager {
 class TypingEngine {
   constructor(game) {
     this.game = game;
-    this.typed = "";
   }
 
   init() {
@@ -118,8 +117,8 @@ class TypingEngine {
     }
 
     if (value === target) {
-      this.game.completeWord();
-      this.typed = "";
+  this.game.completeWord();
+}
     }
   }
 }
@@ -274,9 +273,10 @@ class Game {
   }
 
   completeWord() {
-    this.state.wordsCompleted++;
-    this.nextWord();
-  }
+  this.state.wordsCompleted++;
+  this.state.typed = "";
+  this.nextWord();
+}
 
   fail() {
     this.state.errors++;
