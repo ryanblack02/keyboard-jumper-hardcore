@@ -184,29 +184,6 @@ render() {
   this.renderWord(state.currentWord, state.typed);
   this.renderProgress(state.currentWord, state.typed);
 
-  console.log("1 WPM");
-  this.wpmEl.textContent = stats.getWPM();
-
-  console.log("2 Accuracy");
-  this.accEl.textContent = stats.getAccuracy() + "%";
-
-  console.log("3 Time");
-  this.timeEl.textContent = stats.getTimeSeconds() + "s";
-
-  console.log("4 Words");
-  this.wordsEl.textContent = state.wordsCompleted;
-
-  console.log("5 Errors");
-  this.errEl.textContent = state.errors;
-
-  console.log("6 Height");
-  this.heightEl.textContent = state.height + "m";
-
-  console.log("7 Finished");
-
-  this.renderWord(state.currentWord, state.typed);
-  this.renderProgress(state.currentWord, state.typed);
-
   this.wpmEl.textContent = stats.getWPM();
   this.accEl.textContent = stats.getAccuracy() + "%";
   this.timeEl.textContent = stats.getTimeSeconds() + "s";
