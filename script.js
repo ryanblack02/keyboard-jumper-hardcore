@@ -204,7 +204,7 @@ render() {
   this.heightEl.textContent = state.height + "m";
 
   console.log("7 Finished");
-}
+
   this.renderWord(state.currentWord, state.typed);
   this.renderProgress(state.currentWord, state.typed);
 
