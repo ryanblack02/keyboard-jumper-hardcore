@@ -95,9 +95,9 @@ class TypingEngine {
         return;
       }
 
-      this.typed += e.key;
+      this.game.state.typed += e.key;
 
-      this.handleInput(this.typed);
+      this.handleInput(this.game.state.typed);
     });
   }
 
@@ -107,8 +107,6 @@ class TypingEngine {
     console.log("Typed:", value);
     console.log("Target:", target);
 
-    this.game.state.typed = value;
-
     for (let i = 0; i < value.length; i++) {
       if (value[i] !== target[i]) {
         this.game.fail();
@@ -117,10 +115,11 @@ class TypingEngine {
     }
 
     if (value === target) {
-  this.game.completeWord();
+      this.game.completeWord();
+    }
+  }
 }
-}
-}
+
 
 /* =========================
    STATS ENGINE
