@@ -154,32 +154,33 @@ class StatsEngine {
 ========================= */
 class Renderer {
   constructor(game) {
-    this.game = game;
+  this.game = game;
      
-     this.wordEl = document.getElementById("word");
+  this.wordEl = document.getElementById("word");
      
-     this.wpmEl = document.getElementById("wpm");
-     this.accEl = document.getElementById("accuracy");
-     this.timeEl = document.getElementById("time");
-     this.wordsEl = document.getElementById("words");
-     this.errEl = document.getElementById("errors");
+  this.wpmEl = document.getElementById("wpm");
+  this.accEl = document.getElementById("accuracy");
+  this.timeEl = document.getElementById("time");
+  this.wordsEl = document.getElementById("words");
+  this.errEl = document.getElementById("errors");
+  this.heightEl = document.getElementById("height");
      
-     this.progressEl = document.getElementById("progressFill");
-  }
+  this.progressEl = document.getElementById("progressFill");
+}
 
   render() {
-  const state = this.game.state;
-  const stats = this.game.stats;
-
-  this.renderWord(state.currentWord, state.typed);
-  this.renderProgress(state.currentWord, state.typed);
-
-  this.wpmEl.textContent = stats.getWPM();
-  this.accEl.textContent = stats.getAccuracy() + "%";
-  this.timeEl.textContent = stats.getTimeSeconds() + "s";
-  this.wordsEl.textContent = state.wordsCompleted;
-  this.errEl.textContent = state.errors;
-  this.heightEl.textContent = state.height + "m";
+     const state = this.game.state;
+     const stats = this.game.stats;
+   
+     this.renderWord(state.currentWord, state.typed);
+     this.renderProgress(state.currentWord, state.typed);
+   
+     this.wpmEl.textContent = stats.getWPM();
+     this.accEl.textContent = stats.getAccuracy() + "%";
+     this.timeEl.textContent = stats.getTimeSeconds() + "s";
+     this.wordsEl.textContent = state.wordsCompleted;
+     this.errEl.textContent = state.errors;
+     this.heightEl.textContent = state.height + "m";
 }
 renderWord(word, typed) {
   if (!word) {
