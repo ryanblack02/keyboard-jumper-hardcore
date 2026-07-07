@@ -179,6 +179,7 @@ class Renderer {
   this.timeEl.textContent = stats.getTimeSeconds() + "s";
   this.wordsEl.textContent = state.wordsCompleted;
   this.errEl.textContent = state.errors;
+  this.heightEl.textContent = state.height + "m";
 }
 renderWord(word, typed) {
   if (!word) {
@@ -283,6 +284,7 @@ class Game {
 
   completeWord() {
   this.state.wordsCompleted++;
+  this.state.height++;
   this.state.typed = "";
 
   this.renderer.playJumpAnimation();
