@@ -178,7 +178,6 @@ console.log({
 }
 
 render() {
-  render() {
   const state = this.game.state;
   const stats = this.game.stats;
 
