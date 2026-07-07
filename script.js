@@ -283,16 +283,16 @@ class Game {
   }
 
   completeWord() {
-  this.state.wordsCompleted++;
-  this.state.height++;
-  this.state.typed = "";
-
-  this.renderer.playJumpAnimation();
-
-  setTimeout(() => {
-    this.nextWord();
-  }, 350);
-}
+     this.state.wordsCompleted++;
+     this.state.height++;
+     this.state.typed = "";
+   
+     this.renderer.playJumpAnimation();
+   
+     setTimeout(() => {
+       this.nextWord();
+     }, 350);
+   }
 
   fail() {
     this.state.errors++;
