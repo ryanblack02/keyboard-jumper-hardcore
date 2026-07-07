@@ -177,19 +177,23 @@ console.log({
 });
 }
 
-  render() {
-     const state = this.game.state;
-     const stats = this.game.stats;
-   
-     this.renderWord(state.currentWord, state.typed);
-     this.renderProgress(state.currentWord, state.typed);
-   
-     this.wpmEl.textContent = stats.getWPM();
-     this.accEl.textContent = stats.getAccuracy() + "%";
-     this.timeEl.textContent = stats.getTimeSeconds() + "s";
-     this.wordsEl.textContent = state.wordsCompleted;
-     this.errEl.textContent = state.errors;
-     this.heightEl.textContent = state.height + "m";
+render() {
+  const state = this.game.state;
+  const stats = this.game.stats;
+
+  console.log("Rendering...");
+  console.log("State:", state);
+  console.log("Height element:", this.heightEl);
+
+  this.renderWord(state.currentWord, state.typed);
+  this.renderProgress(state.currentWord, state.typed);
+
+  this.wpmEl.textContent = stats.getWPM();
+  this.accEl.textContent = stats.getAccuracy() + "%";
+  this.timeEl.textContent = stats.getTimeSeconds() + "s";
+  this.wordsEl.textContent = state.wordsCompleted;
+  this.errEl.textContent = state.errors;
+  this.heightEl.textContent = state.height + "m";
 }
 renderWord(word, typed) {
   if (!word) {
