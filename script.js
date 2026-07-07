@@ -166,6 +166,15 @@ class Renderer {
   this.heightEl = document.getElementById("height");
      
   this.progressEl = document.getElementById("progressFill");
+console.log({
+  wpm: this.wpmEl,
+  accuracy: this.accEl,
+  time: this.timeEl,
+  words: this.wordsEl,
+  errors: this.errEl,
+  height: this.heightEl,
+  progress: this.progressEl
+});
 }
 
   render() {
