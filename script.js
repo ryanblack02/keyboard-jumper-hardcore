@@ -156,14 +156,17 @@ class StatsEngine {
 class Renderer {
   constructor(game) {
     this.game = game;
-
-    this.wordEl = document.getElementById("word");
-
-    this.wpmEl = document.getElementById("wpm");
-    this.accEl = document.getElementById("accuracy");
-    this.timeEl = document.getElementById("time");
-    this.wordsEl = document.getElementById("words");
-    this.errEl = document.getElementById("errors");
+     
+     this.wordEl = document.getElementById("word");
+     this.renderProgress(state.currentWord, state.typed);
+     
+     this.wpmEl = document.getElementById("wpm");
+     this.accEl = document.getElementById("accuracy");
+     this.timeEl = document.getElementById("time");
+     this.wordsEl = document.getElementById("words");
+     this.errEl = document.getElementById("errors");
+     
+     this.progressEl = document.getElementById("progressFill");
   }
 
   render() {
@@ -204,6 +207,16 @@ renderWord(word, typed) {
 
     this.wordEl.appendChild(span);
   });
+}
+
+   renderProgress(word, typed) {
+  if (!word || word.length === 0) {
+    this.progressEl.style.width = "0%";
+    return;
+  }
+
+  const percent = (typed.length / word.length) * 100;
+  this.progressEl.style.width = `${percent}%`;
 }
 
 }
