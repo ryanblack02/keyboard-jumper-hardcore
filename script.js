@@ -219,6 +219,15 @@ renderProgress(word, typed) {
 
 }
 
+playJumpAnimation() {
+  this.wordEl.classList.remove("jump");
+
+  // Force browser to restart animation
+  void this.wordEl.offsetWidth;
+
+  this.wordEl.classList.add("jump");
+}
+
 /* =========================
    GAME CONTROLLER
 ========================= */
@@ -275,7 +284,12 @@ class Game {
   completeWord() {
   this.state.wordsCompleted++;
   this.state.typed = "";
-  this.nextWord();
+
+  this.renderer.playJumpAnimation();
+
+  setTimeout(() => {
+    this.nextWord();
+  }, 350);
 }
 
   fail() {
