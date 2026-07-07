@@ -217,8 +217,6 @@ renderProgress(word, typed) {
   this.progressEl.style.width = `${percent}%`;
 }
 
-}
-
 playJumpAnimation() {
   this.wordEl.classList.remove("jump");
 
@@ -226,6 +224,8 @@ playJumpAnimation() {
   void this.wordEl.offsetWidth;
 
   this.wordEl.classList.add("jump");
+}
+   
 }
 
 /* =========================
