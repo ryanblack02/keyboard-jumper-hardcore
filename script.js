@@ -158,7 +158,6 @@ class Renderer {
     this.game = game;
      
      this.wordEl = document.getElementById("word");
-     this.renderProgress(state.currentWord, state.typed);
      
      this.wpmEl = document.getElementById("wpm");
      this.accEl = document.getElementById("accuracy");
@@ -174,6 +173,7 @@ class Renderer {
   const stats = this.game.stats;
 
   this.renderWord(state.currentWord, state.typed);
+  this.renderProgress(state.currentWord, state.typed);
 
   this.wpmEl.textContent = stats.getWPM();
   this.accEl.textContent = stats.getAccuracy() + "%";
@@ -181,7 +181,6 @@ class Renderer {
   this.wordsEl.textContent = state.wordsCompleted;
   this.errEl.textContent = state.errors;
 }
-
 renderWord(word, typed) {
   if (!word) {
     this.wordEl.textContent = "";
