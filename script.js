@@ -281,17 +281,18 @@ class Game {
     this.state.typed = "";
   }
 
-  completeWord() {
-     this.state.wordsCompleted++;
-     this.state.height++;
-     this.state.typed = "";
-   
-     this.renderer.playJumpAnimation();
-   
-     setTimeout(() => {
-       this.nextWord();
-     }, 350);
-   }
+completeWord() {
+  this.state.wordsCompleted++;
+  this.state.height++;
+  this.state.typed = "";
+
+  this.renderer.playJumpAnimation();
+
+  setTimeout(() => {
+    this.nextWord();
+    this.renderer.render();
+  }, 350);
+}
 
   fail() {
     this.state.errors++;
