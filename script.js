@@ -151,18 +151,19 @@ class StatsEngine {
 ========================= */
 class Renderer {
   constructor(game) {
-  this.game = game;
+     this.game = game;
      
-  this.wordEl = document.getElementById("word");
+     this.wordEl = document.getElementById("word");
+
+     this.reportScreen = document.getElementById("reportScreen");
      
-  this.wpmEl = document.getElementById("wpm");
-  this.accEl = document.getElementById("accuracy");
-  this.timeEl = document.getElementById("time");
-  this.wordsEl = document.getElementById("words");
-  this.errEl = document.getElementById("errors");
-  this.heightEl = document.getElementById("height");
-     
-  this.progressEl = document.getElementById("progressFill");
+     this.wpmEl = document.getElementById("wpm");
+     this.accEl = document.getElementById("accuracy");
+     this.timeEl = document.getElementById("time");
+     this.wordsEl = document.getElementById("words");
+     this.errEl = document.getElementById("errors");
+     this.heightEl = document.getElementById("height");
+     this.progressEl = document.getElementById("progressFill");
 
 }
 
@@ -220,12 +221,15 @@ renderProgress(word, typed) {
 playJumpAnimation() {
   this.wordEl.classList.remove("jump");
 
-  // Force browser to restart animation
   void this.wordEl.offsetWidth;
 
   this.wordEl.classList.add("jump");
 }
-  
+
+showReport() {
+  this.reportScreen.classList.remove("hidden");
+}
+}
 }
 
 /* =========================
@@ -302,8 +306,7 @@ fail() {
 }
 
 endGame() {
-  alert("Game Over!");
-  this.state.reset();
+  this.renderer.showReport();
 }
 
 loop() {
