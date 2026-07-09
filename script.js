@@ -154,8 +154,9 @@ class Renderer {
      this.game = game;
      
      this.wordEl = document.getElementById("word");
-
+     
      this.reportScreen = document.getElementById("reportScreen");
+     this.gameContainer = document.getElementById("gameContainer");
      
      this.wpmEl = document.getElementById("wpm");
      this.accEl = document.getElementById("accuracy");
@@ -227,6 +228,7 @@ playJumpAnimation() {
 }
 
 showReport() {
+  this.gameContainer.classList.add("hidden");
   this.reportScreen.classList.remove("hidden");
 }
 
