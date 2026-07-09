@@ -106,9 +106,6 @@ class TypingEngine {
   handleInput(value) {
     const target = this.game.state.currentWord;
 
-    console.log("Typed:", value);
-    console.log("Target:", target);
-
     for (let i = 0; i < value.length; i++) {
       if (value[i] !== target[i]) {
         this.game.fail();
@@ -166,15 +163,7 @@ class Renderer {
   this.heightEl = document.getElementById("height");
      
   this.progressEl = document.getElementById("progressFill");
-console.log({
-  wpm: this.wpmEl,
-  accuracy: this.accEl,
-  time: this.timeEl,
-  words: this.wordsEl,
-  errors: this.errEl,
-  height: this.heightEl,
-  progress: this.progressEl
-});
+
 }
 
 render() {
