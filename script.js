@@ -295,11 +295,10 @@ completeWord() {
 }
 
 fail() {
-   this.state.errors++;
-   this.state.status = "gameover";
-   
-   alert("Game Over!");
-   this.state.reset();
+  this.state.errors++;
+  this.state.status = "gameover";
+
+  this.endGame();
 }
 
 endGame() {
