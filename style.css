@@ -180,7 +180,7 @@ select:hover {
   text-align: center;
 }
 
-.report.hidden {
+.hidden {
   display: none;
 }
 
