@@ -294,16 +294,21 @@ completeWord() {
   }, 350);
 }
 
-  fail() {
-    this.state.errors++;
-    this.state.status = "gameover";
+fail() {
+   this.state.errors++;
+   this.state.status = "gameover";
+   
+   alert("Game Over!");
+   this.state.reset();
+}
 
-    alert("Game Over!");
-    this.state.reset();
-  }
+endGame() {
+  alert("Game Over!");
+  this.state.reset();
+}
 
-  loop() {
-    setInterval(() => {
+loop() {
+   setInterval(() => {
       this.renderer.render();
     }, 50);
   }
