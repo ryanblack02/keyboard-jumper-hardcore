@@ -229,7 +229,7 @@ playJumpAnimation() {
 showReport() {
   this.reportScreen.classList.remove("hidden");
 }
-}
+
 }
 
 /* =========================
