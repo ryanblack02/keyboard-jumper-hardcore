@@ -240,6 +240,11 @@ showReport() {
   this.reportScreen.classList.remove("hidden");
 }
 
+showGame() {
+  this.reportScreen.classList.add("hidden");
+  this.gameContainer.classList.remove("hidden");
+}
+
 }
 
 /* =========================
@@ -274,15 +279,17 @@ class Game {
   }
 
   start() {
-    this.state.reset();
+  this.state.reset();
 
-    this.state.status = "running";
-    this.state.sessionStart = Date.now();
+  this.renderer.showGame();
 
-    this.nextWord();
+  this.state.status = "running";
+  this.state.sessionStart = Date.now();
 
-    this.renderer.render();
-  }
+  this.nextWord();
+
+  this.renderer.render();
+}
 
   restart() {
     this.start();
