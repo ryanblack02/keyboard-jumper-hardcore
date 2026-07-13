@@ -5,26 +5,28 @@
 ========================= */
 class GameState {
   constructor() {
-    this.status = "idle";
-    this.currentWord = "";
-    this.typed = "";
-    this.difficulty = "easy";
-
-    this.sessionStart = null;
-
-    this.errors = 0;
-    this.wordsCompleted = 0;
-    this.height = 0;
+     this.status = "idle";
+     this.currentWord = "";
+     this.typed = "";
+     this.difficulty = "easy";
+     
+     this.sessionStart = null;
+     this.sessionEnd = null;
+     
+     this.errors = 0;
+     this.wordsCompleted = 0;
+     this.height = 0;
   }
 
   reset() {
-  this.status = "idle";
-  this.currentWord = "";
-  this.typed = "";
-  this.sessionStart = null;
-  this.errors = 0;
-  this.wordsCompleted = 0;
-  this.height = 0;
+     this.status = "idle";
+     this.currentWord = "";
+     this.typed = "";
+     this.sessionStart = null;
+     this.sessionEnd = null;
+     this.errors = 0;
+     this.wordsCompleted = 0;
+     this.height = 0;
 }
 }
 
@@ -129,10 +131,16 @@ class StatsEngine {
   }
 
   getTimeSeconds() {
-    if (!this.state.sessionStart) return 0;
-    return Math.floor((Date.now() - this.state.sessionStart) / 1000);
+  if (!this.state.sessionStart) {
+    return 0;
   }
 
+  const endTime = this.state.sessionEnd ?? Date.now();
+
+  return Math.floor(
+    (endTime - this.state.sessionStart) / 1000
+  );
+}
   getWPM() {
     const minutes = this.getTimeSeconds() / 60;
     if (minutes === 0) return 0;
@@ -308,6 +316,8 @@ fail() {
 }
 
 endGame() {
+  this.state.sessionEnd = Date.now();
+
   this.renderer.showReport();
 }
 
