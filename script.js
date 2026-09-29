@@ -173,7 +173,12 @@ class Renderer {
      this.errEl = document.getElementById("errors");
      this.heightEl = document.getElementById("height");
      this.progressEl = document.getElementById("progressFill");
-
+     this.finalWpmEl = document.getElementById("finalWpm");
+     this.finalAccuracyEl = document.getElementById("finalAccuracy");
+     this.finalTimeEl = document.getElementById("finalTime");
+     this.finalWordsEl = document.getElementById("finalWords");
+     this.finalHeightEl = document.getElementById("finalHeight");
+     this.finalErrorsEl = document.getElementById("finalErrors");
 }
 
 render() {
