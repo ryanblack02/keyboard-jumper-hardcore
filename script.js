@@ -342,6 +342,7 @@ fail() {
 endGame() {
   this.state.sessionEnd = Date.now();
 
+  this.renderer.renderReport();
   this.renderer.showReport();
 }
 
