@@ -177,6 +177,12 @@ recordMistake(word, difficulty) {
     this.mistakes[word].mistakes++;
 }
 
+getWeakestWords() {
+    return Object.entries(this.mistakes)
+      .sort((a, b) => b[1].mistakes - a[1].mistakes)
+      .slice(0, 10);
+  }
+
 }  // closes WeakWordTracker
 
 /* =========================
