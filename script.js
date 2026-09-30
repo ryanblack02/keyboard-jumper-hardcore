@@ -7,6 +7,7 @@ class GameState {
   constructor() {
      this.status = "idle";
      this.currentWord = "";
+     this.currentWordDifficulty = "";
      this.typed = "";
      this.difficulty = "easy";
      
@@ -21,6 +22,7 @@ class GameState {
   reset() {
      this.status = "idle";
      this.currentWord = "";
+     this.currentWordDifficulty = "";
      this.typed = "";
      this.sessionStart = null;
      this.sessionEnd = null;
@@ -331,13 +333,14 @@ class Game {
   restart() {
     this.start();
   }
-
+   
   nextWord() {
-    const word = this.wordManager.getNextWord(this.state.difficulty);
-
-    this.state.currentWord = word;
-    this.state.typed = "";
-  }
+     const selected = this.wordManager.getNextWord(this.state.difficulty);
+     
+     this.state.currentWord = selected.word;
+     this.state.currentWordDifficulty = selected.difficulty;
+     this.state.typed = "";
+   }
 
 completeWord() {
   this.state.wordsCompleted++;
