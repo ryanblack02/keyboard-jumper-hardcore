@@ -210,6 +210,7 @@ class Renderer {
      this.finalWordsEl = document.getElementById("finalWords");
      this.finalHeightEl = document.getElementById("finalHeight");
      this.finalErrorsEl = document.getElementById("finalErrors");
+     this.weakWordsListEl = document.getElementById("weakWordsList");
 }
 
 render() {
@@ -273,6 +274,23 @@ renderReport() {
   this.finalWordsEl.textContent = state.wordsCompleted;
   this.finalHeightEl.textContent = state.height + "m";
   this.finalErrorsEl.textContent = state.errors;
+
+  this.renderWeakWords(); 
+}
+
+renderWeakWords() {
+  const weakWords = this.game.weakWords.getWeakestWords();
+
+  this.weakWordsListEl.innerHTML = "";
+
+  weakWords.forEach(([word, data]) => {
+    const li = document.createElement("li");
+
+    li.textContent =
+      `${word} — ${data.difficulty} — ${data.mistakes} mistake(s)`;
+
+    this.weakWordsListEl.appendChild(li);
+  });
 }
    
 playJumpAnimation() {
