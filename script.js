@@ -352,6 +352,7 @@ completeWord() {
 
 fail() {
   this.state.errors++;
+  this.weakWords.recordMistake(this.state.currentWord); 
   this.state.status = "gameover";
 
   this.endGame();
