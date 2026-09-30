@@ -289,6 +289,7 @@ class Game {
     this.state = new GameState();
     this.wordManager = new WordManager(words);
     this.stats = new StatsEngine(this.state);
+    this.weakWords = new WeakWordTracker(); 
     this.renderer = new Renderer(this);
     this.typing = new TypingEngine(this);
   }
