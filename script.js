@@ -155,6 +155,23 @@ class StatsEngine {
 }
 
 /* =========================
+   WEAK WORD TRACKER
+========================= */
+class WeakWordTracker {
+  constructor() {
+    this.mistakes = {};
+  }
+
+  recordMistake(word) {
+    if (!this.mistakes[word]) {
+      this.mistakes[word] = 0;
+    }
+
+    this.mistakes[word]++;
+  }
+}
+
+/* =========================
    RENDERER
 ========================= */
 class Renderer {
