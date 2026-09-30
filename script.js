@@ -64,23 +64,25 @@ class WordManager {
     return this.index[difficulty] || this.index.all;
   }
 
-  getNextWord(difficulty) {
-     const pool = this.getPool(difficulty);
-   
-     let selected;
-   
-     do {
-       selected = pool[Math.floor(Math.random() * pool.length)];
-     } while (this.recentWords.includes(selected.word));
-   
-     this.recentWords.push(selected.word);
-   
-     if (this.recentWords.length > this.maxHistory) {
-       this.recentWords.shift();
-     }
-   
-     return selected;
-   }
+getNextWord(difficulty) {
+  const pool = this.getPool(difficulty);
+
+  let selected;
+
+  do {
+    selected = pool[Math.floor(Math.random() * pool.length)];
+  } while (this.recentWords.includes(selected.word));
+
+  this.recentWords.push(selected.word);
+
+  if (this.recentWords.length > this.maxHistory) {
+    this.recentWords.shift();
+  }
+
+  return selected;
+}
+
+}  // ← closes the WordManager class
 
 /* =========================
    TYPING ENGINE
