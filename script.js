@@ -174,9 +174,11 @@ recordMistake(word, difficulty) {
     };
   }
 
-  this.mistakes[word].mistakes++;
+    this.mistakes[word].mistakes++;
 }
-   
+
+}  // closes WeakWordTracker
+
 /* =========================
    RENDERER
 ========================= */
