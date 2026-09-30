@@ -49,13 +49,14 @@ class WordManager {
   }
 
   init() {
-    for (const w of this.words) {
-      if (this.index[w.difficulty]) {
-        this.index[w.difficulty].push(w.word);
-      }
-      this.index.all.push(w.word);
-    }
-  }
+     for (const w of this.words) {
+       if (this.index[w.difficulty]) {
+         this.index[w.difficulty].push(w);
+       }
+   
+       this.index.all.push(w);
+     }
+   }
 
   getPool(difficulty) {
     return this.index[difficulty] || this.index.all;
