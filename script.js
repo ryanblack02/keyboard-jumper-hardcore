@@ -232,6 +232,18 @@ renderProgress(word, typed) {
   this.progressEl.style.width = `${percent}%`;
 }
 
+renderReport() {
+  const state = this.game.state;
+  const stats = this.game.stats;
+
+  this.finalWpmEl.textContent = stats.getWPM();
+  this.finalAccuracyEl.textContent = stats.getAccuracy() + "%";
+  this.finalTimeEl.textContent = stats.getTimeSeconds() + "s";
+  this.finalWordsEl.textContent = state.wordsCompleted;
+  this.finalHeightEl.textContent = state.height + "m";
+  this.finalErrorsEl.textContent = state.errors;
+}
+   
 playJumpAnimation() {
   this.wordEl.classList.remove("jump");
 
