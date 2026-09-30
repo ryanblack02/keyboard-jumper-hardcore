@@ -162,15 +162,17 @@ class WeakWordTracker {
     this.mistakes = {};
   }
 
-  recordMistake(word) {
-    if (!this.mistakes[word]) {
-      this.mistakes[word] = 0;
-    }
-
-    this.mistakes[word]++;
+recordMistake(word, difficulty) {
+  if (!this.mistakes[word]) {
+    this.mistakes[word] = {
+      difficulty: difficulty,
+      mistakes: 0
+    };
   }
-}
 
+  this.mistakes[word].mistakes++;
+}
+   
 /* =========================
    RENDERER
 ========================= */
