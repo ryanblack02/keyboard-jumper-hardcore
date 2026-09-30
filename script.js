@@ -63,23 +63,22 @@ class WordManager {
   }
 
   getNextWord(difficulty) {
-    const pool = this.getPool(difficulty);
-
-    let word;
-
-    do {
-      word = pool[Math.floor(Math.random() * pool.length)];
-    } while (this.recentWords.includes(word));
-
-    this.recentWords.push(word);
-
-    if (this.recentWords.length > this.maxHistory) {
-      this.recentWords.shift();
-    }
-
-    return word;
-  }
-}
+     const pool = this.getPool(difficulty);
+   
+     let selected;
+   
+     do {
+       selected = pool[Math.floor(Math.random() * pool.length)];
+     } while (this.recentWords.includes(selected.word));
+   
+     this.recentWords.push(selected.word);
+   
+     if (this.recentWords.length > this.maxHistory) {
+       this.recentWords.shift();
+     }
+   
+     return selected;
+   }
 
 /* =========================
    TYPING ENGINE
