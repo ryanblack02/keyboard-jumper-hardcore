@@ -96,12 +96,43 @@ export class Game {
     this.endGame();
   }
 
+  
   endGame() {
     this.state.sessionEnd = Date.now();
-
+   
+    this.updatePersistentStats();
+   
     this.renderer.renderReport();
     this.renderer.showReport();
-  }
+   }
+   
+  updatePersistentStats() {
+    const records = this.persistentStats.records;
+   
+    // Personal best WPM
+    records.personalBestWPM = Math.max(
+      records.personalBestWPM,
+      this.stats.getWPM()
+   );
+   
+     // Highest height
+     records.highestHeight = Math.max(
+       records.highestHeight,
+       this.state.height
+     );
+
+     // Lifetime words completed
+     records.lifetimeWordsCompleted += this.state.wordsCompleted;
+
+     // Longest run
+     records.longestRun = Math.max(
+       records.longestRun,
+       this.state.wordsCompleted
+  );
+
+  this.persistentStats.save();
+}
+
 
   loop() {
     setInterval(() => {
