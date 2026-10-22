@@ -4,6 +4,7 @@
 ========================= */
 
 import { GameState } from "./classes/GameState.js";
+import { PersistentStats } from "./classes/PersistentStats.js";
 import { WordManager } from "./classes/WordManager.js";
 import { TypingEngine } from "./classes/TypingEngine.js";
 import { StatsEngine } from "./classes/StatsEngine.js";
