@@ -17,6 +17,11 @@ export class Game {
     this.wordManager = new WordManager(words);
     this.stats = new StatsEngine(this.state);
     this.weakWords = new WeakWordTracker();
+     
+    this.persistentStats = new PersistentStats();
+    this.persistentStats.load();
+
+     
     this.renderer = new Renderer(this);
     this.typing = new TypingEngine(this);
   }
