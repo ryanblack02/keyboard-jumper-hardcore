@@ -29,6 +29,8 @@ export class Game {
     this.wordManager.init();
     this.typing.init();
 
+    this.renderer.renderPersonalRecords();
+     
     const difficultySelect = document.getElementById("difficultySelect");
 
     difficultySelect.addEventListener("change", (e) => {
@@ -99,6 +101,8 @@ export class Game {
     this.state.sessionEnd = Date.now();
 
     this.updatePersistentStats();
+
+    this.renderer.renderPersonalRecords(); 
 
     this.renderer.renderReport();
     this.renderer.showReport();
