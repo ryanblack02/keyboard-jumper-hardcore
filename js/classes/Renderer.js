@@ -28,6 +28,10 @@ export class Renderer {
     this.finalErrorsEl = document.getElementById("finalErrors");
 
     this.weakWordsListEl = document.getElementById("weakWordsList");
+    this.recordWpmEl = document.getElementById("recordWpm");
+    this.recordHeightEl = document.getElementById("recordHeight");
+    this.recordLifetimeWordsEl = document.getElementById("recordLifetimeWords");
+    this.recordLongestRunEl = document.getElementById("recordLongestRun");
   }
 
   render() {
@@ -128,4 +132,13 @@ export class Renderer {
     this.reportScreen.classList.add("hidden");
     this.gameContainer.classList.remove("hidden");
   }
+
+  renderPersonalRecords() {
+  const records = this.game.persistentStats.records;
+
+  this.recordWpmEl.textContent = records.personalBestWPM;
+  this.recordHeightEl.textContent = records.highestHeight + "m";
+  this.recordLifetimeWordsEl.textContent = records.lifetimeWordsCompleted;
+  this.recordLongestRunEl.textContent = records.longestRun + " words";
+  } 
 }
