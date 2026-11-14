@@ -346,6 +346,24 @@ select:hover {
   font-size: 15px;
 }
 
+.player {
+  animation: jumpEffect 1s ease infinite;
+}
+
+@keyframes jumpEffect {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-100px);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 #word:empty {
   display: none;
 }
