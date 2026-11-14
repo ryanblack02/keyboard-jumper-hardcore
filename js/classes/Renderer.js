@@ -116,12 +116,12 @@ export class Renderer {
   }
 
   playJumpAnimation() {
-    this.playerEl.classList.remove("jump");
-
-    void this.wordEl.offsetWidth;
-
-    this.wordEl.classList.add("jump");
-  }
+     this.playerEl.classList.remove("jump");
+   
+     void this.playerEl.offsetWidth;
+   
+     this.playerEl.classList.add("jump");
+   }
 
   showReport() {
     this.gameContainer.classList.add("hidden");
