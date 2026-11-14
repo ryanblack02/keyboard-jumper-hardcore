@@ -266,7 +266,7 @@ select:hover {
   }
 
   50% {
-    transform: translateX(-50%) translateY(-70px);
+    transform: translateX(-50%) translateY(-100px);
   }
 
   100% {
