@@ -16,15 +16,23 @@ export class WeakWordTracker {
        this.mistakes[word] = {
          difficulty: difficulty,
          mistakes: 0
+         lastMistake: Date.now() 
        };
      }
    
      this.mistakes[word].mistakes++;
+     this.mistakes[word].lastMistake = Date.now();
    
      const words = Object.entries(this.mistakes);
    
      if (words.length > this.maxWords) {
-       words.sort((a, b) => a[1].mistakes - b[1].mistakes);
+       words.sort((a, b) => {
+       if (a[1].mistakes !== b[1].mistakes) {
+          return a[1].mistakes - b[1].mistakes;
+       }
+      
+       return a[1].lastMistake - b[1].lastMistake;
+      });
    
        const weakestWord = words[0][0];
    
