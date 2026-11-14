@@ -78,6 +78,7 @@ export class Game {
     this.state.height++;
     this.state.typed = "";
 
+    console.log("Player jump triggered!"); 
     this.renderer.playJumpAnimation();
 
     setTimeout(() => {
