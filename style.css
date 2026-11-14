@@ -256,25 +256,23 @@ select:hover {
    JUMP EFFECT
 ========================= */
 
-.word.jump {
+.player.jump {
   animation: jumpEffect 0.35s ease;
 }
 
 @keyframes jumpEffect {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateX(-50%) translateY(0);
   }
 
   50% {
-    transform: translateY(-25px) scale(1.15);
-    text-shadow: 0 0 30px var(--success);
+    transform: translateX(-50%) translateY(-70px);
   }
 
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateX(-50%) translateY(0);
   }
 }
-
 
 /* =========================
    GAME WORLD
