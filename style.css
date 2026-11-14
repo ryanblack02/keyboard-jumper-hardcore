@@ -331,3 +331,23 @@ select:hover {
   left: 50%;
   transform: translateX(-50%);
 }
+
+/* =========================
+   START MESSAGE
+========================= */
+
+#startMessage h2 {
+  color: #172554;
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+#startMessage p {
+  color: #334155;
+  margin: 0;
+  font-size: 15px;
+}
+
+#word:empty {
+  display: none;
+}
