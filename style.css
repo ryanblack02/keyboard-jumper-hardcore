@@ -294,6 +294,14 @@ select:hover {
   overflow: hidden;
 }
 
+.game-world .word-display {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+}
+
 /* PLAYER */
 
 .player {
