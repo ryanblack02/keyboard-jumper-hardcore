@@ -4,43 +4,44 @@
 
 export class WeakWordTracker {
   constructor() {
-     this.storageKey = "keyboardJumperWeakWords";
-     this.maxWords = 30;
-     this.mistakes = {};
-   
-     this.load();
-   }
+    this.storageKey = "keyboardJumperWeakWords";
+    this.maxWords = 30;
+    this.mistakes = {};
 
-   recordMistake(word, difficulty) {
-     if (!this.mistakes[word]) {
-       this.mistakes[word] = {
-         difficulty: difficulty,
-         mistakes: 0
-         lastMistake: Date.now() 
-       };
-     }
-   
-     this.mistakes[word].mistakes++;
-     this.mistakes[word].lastMistake = Date.now();
-   
-     const words = Object.entries(this.mistakes);
-   
-     if (words.length > this.maxWords) {
-       words.sort((a, b) => {
-       if (a[1].mistakes !== b[1].mistakes) {
+    this.load();
+  }
+
+  recordMistake(word, difficulty) {
+    if (!this.mistakes[word]) {
+      this.mistakes[word] = {
+        difficulty: difficulty,
+        mistakes: 0,
+        lastMistake: Date.now()
+      };
+    }
+
+    this.mistakes[word].mistakes++;
+    this.mistakes[word].lastMistake = Date.now();
+
+    const words = Object.entries(this.mistakes);
+
+    if (words.length > this.maxWords) {
+      words.sort((a, b) => {
+        if (a[1].mistakes !== b[1].mistakes) {
           return a[1].mistakes - b[1].mistakes;
-       }
-      
-       return a[1].lastMistake - b[1].lastMistake;
+        }
+
+        return (a[1].lastMistake ?? 0) -
+               (b[1].lastMistake ?? 0);
       });
-   
-       const weakestWord = words[0][0];
-   
-       delete this.mistakes[weakestWord];
-     }
-   
-     this.save();
-   }
+
+      const weakestWord = words[0][0];
+
+      delete this.mistakes[weakestWord];
+    }
+
+    this.save();
+  }
 
   getWeakestWords() {
     return Object.entries(this.mistakes)
