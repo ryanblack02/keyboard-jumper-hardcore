@@ -11,18 +11,28 @@ export class WeakWordTracker {
      this.load();
    }
 
-  recordMistake(word, difficulty) {
-    if (!this.mistakes[word]) {
-      this.mistakes[word] = {
-        difficulty: difficulty,
-        mistakes: 0
-      };
-    }
-
-    this.mistakes[word].mistakes++;
-
-    this.save();
-  }
+   recordMistake(word, difficulty) {
+     if (!this.mistakes[word]) {
+       this.mistakes[word] = {
+         difficulty: difficulty,
+         mistakes: 0
+       };
+     }
+   
+     this.mistakes[word].mistakes++;
+   
+     const words = Object.entries(this.mistakes);
+   
+     if (words.length > this.maxWords) {
+       words.sort((a, b) => a[1].mistakes - b[1].mistakes);
+   
+       const weakestWord = words[0][0];
+   
+       delete this.mistakes[weakestWord];
+     }
+   
+     this.save();
+   }
 
   getWeakestWords() {
     return Object.entries(this.mistakes)
