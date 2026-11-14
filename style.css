@@ -135,8 +135,8 @@ select:hover {
 .word {
   font-size: 42px;
   letter-spacing: 2px;
-  color: var(--accent);
-  text-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+  color: #172554;
+  text-shadow: none;
   transition: 0.15s ease;
 }
 
@@ -300,6 +300,8 @@ select:hover {
   left: 0;
   width: 100%;
   z-index: 2;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 0;
 }
 
 /* PLAYER */
