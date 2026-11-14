@@ -51,6 +51,8 @@ export class Game {
 
     this.renderer.showGame();
 
+    document.getElementById("startMessage").style.display = "none"; 
+
     this.state.status = "running";
     this.state.sessionStart = Date.now();
 
