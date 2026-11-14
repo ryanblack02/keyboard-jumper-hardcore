@@ -7,6 +7,7 @@ export class Renderer {
     this.game = game;
 
     this.wordEl = document.getElementById("word");
+    this.playerEl = document.getElementById("player"); 
 
     this.reportScreen = document.getElementById("reportScreen");
     this.gameContainer = document.getElementById("gameContainer");
