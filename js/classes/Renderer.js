@@ -116,7 +116,7 @@ export class Renderer {
   }
 
   playJumpAnimation() {
-    this.wordEl.classList.remove("jump");
+    this.playerEl.classList.remove("jump");
 
     void this.wordEl.offsetWidth;
 
