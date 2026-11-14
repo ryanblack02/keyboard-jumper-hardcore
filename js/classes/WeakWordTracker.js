@@ -4,11 +4,12 @@
 
 export class WeakWordTracker {
   constructor() {
-    this.storageKey = "keyboardJumperWeakWords";
-    this.mistakes = {};
-
-    this.load();
-  }
+     this.storageKey = "keyboardJumperWeakWords";
+     this.maxWords = 30;
+     this.mistakes = {};
+   
+     this.load();
+   }
 
   recordMistake(word, difficulty) {
     if (!this.mistakes[word]) {
