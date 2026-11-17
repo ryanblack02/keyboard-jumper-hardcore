@@ -4,20 +4,3 @@
 @import url("./css/game-world.css");
 @import url("./css/scenery.css");
 @import url("./css/animations.css");
-
-
-/* =========================
-   START MESSAGE
-========================= */
-
-#startMessage h2 {
-  color: #172554;
-  margin: 0 0 8px;
-  font-size: 24px;
-}
-
-#startMessage p {
-  color: #334155;
-  margin: 0;
-  font-size: 15px;
-}
