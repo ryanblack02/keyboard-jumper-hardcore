@@ -346,3 +346,69 @@ select:hover {
   margin: 0;
   font-size: 15px;
 }
+
+
+/* =========================
+   FLOATING CLOUDS
+========================= */
+
+.cloud {
+  position: absolute;
+  width: 100px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50px;
+  z-index: 1;
+  animation: cloudDrift 18s linear infinite alternate;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud::before {
+  width: 45px;
+  height: 45px;
+  top: -20px;
+  left: 15px;
+}
+
+.cloud::after {
+  width: 55px;
+  height: 55px;
+  top: -25px;
+  right: 10px;
+}
+
+.cloud-one {
+  top: 100px;
+  left: 5%;
+}
+
+.cloud-two {
+  top: 210px;
+  left: 55%;
+  transform: scale(0.8);
+  animation-duration: 24s;
+}
+
+.cloud-three {
+  top: 55px;
+  left: 75%;
+  transform: scale(0.6);
+  animation-duration: 30s;
+}
+
+@keyframes cloudDrift {
+  from {
+    translate: -20px 0;
+  }
+
+  to {
+    translate: 40px 0;
+  }
+}
