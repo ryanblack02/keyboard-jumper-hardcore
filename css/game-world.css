@@ -1,0 +1,51 @@
+/* =========================
+   GAME WORLD
+========================= */
+
+.game-world {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to bottom, #65c7f7, #b8a5f5, #f5c6e8);
+  border: 3px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.game-world .word-display {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 0;
+}
+
+/* PLAYER */
+
+.player {
+  position: absolute;
+  width: 40px;
+  height: 50px;
+  background-color: #e63946;
+  border: 3px solid #333;
+  border-radius: 10px;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* PLATFORM */
+
+.platform {
+  position: absolute;
+  width: 140px;
+  height: 18px;
+  background-color: #4caf50;
+  border: 3px solid #333;
+  border-radius: 6px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
