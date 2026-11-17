@@ -1,38 +1,5 @@
 @import url("./css/base.css");
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.stat {
-  background: var(--panel);
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: var(--shadow);
-}
-
-.stat .label {
-  font-size: 11px;
-  opacity: 0.6;
-  display: block;
-}
-
-.stat span:last-child {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.stat.danger {
-  border: 1px solid rgba(255, 51, 102, 0.4);
-}
+@import url("./css/dashboard.css");
 
 /* =========================
    GAME AREA
