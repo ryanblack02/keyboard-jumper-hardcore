@@ -455,3 +455,55 @@ select:hover {
   left: 38%;
   transform: scale(0.6);
 }
+
+
+/* =========================
+   ISLAND FLOWERS
+========================= */
+
+.flower {
+  position: absolute;
+  top: -22px;
+  width: 9px;
+  height: 9px;
+  background: #ffd166;
+  border-radius: 50%;
+
+  box-shadow:
+    0 -5px 0 #ff8fab,
+    0 5px 0 #ff8fab,
+    5px 0 0 #ff8fab,
+    -5px 0 0 #ff8fab;
+
+  z-index: 2;
+}
+
+.flower-one {
+  left: 20px;
+}
+
+.flower-two {
+  left: 55px;
+  top: -18px;
+  transform: scale(0.8);
+  background: #fff3a3;
+
+  box-shadow:
+    0 -5px 0 #c084fc,
+    0 5px 0 #c084fc,
+    5px 0 0 #c084fc,
+    -5px 0 0 #c084fc;
+}
+
+.flower-three {
+  left: 90px;
+  top: -20px;
+  transform: scale(0.9);
+  background: #ffffff;
+
+  box-shadow:
+    0 -5px 0 #f9a8d4,
+    0 5px 0 #f9a8d4,
+    5px 0 0 #f9a8d4,
+    -5px 0 0 #f9a8d4;
+}
