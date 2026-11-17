@@ -169,3 +169,32 @@
   background-size: 100% 200%;
   animation: waterfallFlow 1.2s linear infinite;
 }
+
+/* =========================
+   WATER DROPLETS
+========================= */
+
+.water-drop {
+  position: absolute;
+  bottom: 0;
+  width: 5px;
+  height: 8px;
+  background: #bae6fd;
+  border-radius: 50%;
+  opacity: 0;
+  animation: waterSplash 1.4s ease-out infinite;
+}
+
+.drop-one {
+  left: -5px;
+}
+
+.drop-two {
+  left: 10px;
+  animation-delay: 0.45s;
+}
+
+.drop-three {
+  left: 25px;
+  animation-delay: 0.9s;
+}
