@@ -284,8 +284,9 @@ select:hover {
   height: 400px;
   background: linear-gradient(
     to bottom,
-    #87ceeb,
-    #d9f0ff
+    #65c7f7,
+    #b8a5f5,
+    #f5c6e8
   );
   border: 3px solid #333;
   border-radius: 12px;
