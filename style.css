@@ -412,3 +412,46 @@ select:hover {
     translate: 40px 0;
   }
 }
+
+
+/* =========================
+   FLOATING ISLANDS
+========================= */
+
+.island {
+  position: absolute;
+  width: 120px;
+  height: 45px;
+  background: #795548;
+  border-radius: 10px 10px 45px 45px;
+  z-index: 0;
+}
+
+.island::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -5px;
+  width: 130px;
+  height: 18px;
+  background: #65b84f;
+  border-radius: 50%;
+}
+
+.island-one {
+  top: 290px;
+  left: 8%;
+  transform: scale(0.9);
+}
+
+.island-two {
+  top: 250px;
+  left: 65%;
+  transform: scale(0.75);
+}
+
+.island-three {
+  top: 145px;
+  left: 38%;
+  transform: scale(0.6);
+}
