@@ -33,3 +33,17 @@
     translate: 40px 0;
   }
 }
+
+/* =========================
+   WATERFALL FLOW
+========================= */
+
+@keyframes waterfallFlow {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 100%;
+  }
+}
