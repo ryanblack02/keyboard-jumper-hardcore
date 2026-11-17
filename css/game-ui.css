@@ -1,0 +1,142 @@
+/* =========================
+   GAME AREA
+========================= */
+
+.game-container {
+  background: var(--panel);
+  border-radius: 16px;
+  padding: 40px 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.word-display {
+  margin-bottom: 20px;
+}
+
+.word {
+  font-size: 42px;
+  letter-spacing: 2px;
+  color: #172554;
+  text-shadow: none;
+  transition: 0.15s ease;
+}
+
+/* TYPING INPUT */
+
+#hiddenInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* PROGRESS BAR */
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #0f0f14;
+  border-radius: 20px;
+  margin-top: 30px;
+  overflow: hidden;
+}
+
+#progressFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.2s ease;
+}
+
+/* REPORT SCREEN */
+
+.report {
+  margin-top: 20px;
+  padding: 30px;
+  background: var(--panel);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.report h2 {
+  margin-bottom: 15px;
+  color: var(--accent);
+}
+
+.report-stats {
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.weak-words {
+  margin-top: 20px;
+}
+
+.weak-words ul {
+  list-style: none;
+  padding: 0;
+}
+
+.weak-words li {
+  padding: 4px 0;
+  color: var(--danger);
+}
+
+/* START MESSAGE */
+
+#startMessage h2 {
+  color: #172554;
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+#startMessage p {
+  color: #334155;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* TYPING COLORS */
+
+.word span {
+  transition: 0.15s ease;
+}
+
+.word .correct {
+  color: #00ff99;
+  text-shadow: 0 0 10px #00ff99;
+}
+
+.word .wrong {
+  color: #ff3366;
+  text-shadow: 0 0 10px #ff3366;
+}
+
+.word .current {
+  color: #00ccff;
+  text-shadow: 0 0 15px #00ccff;
+}
+
+/* RESPONSIVE LAYOUT */
+
+@media (max-width: 768px) {
+  .word {
+    font-size: 32px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
