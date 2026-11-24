@@ -67,3 +67,23 @@
     opacity: 0;
   }
 }
+
+/* =========================
+   WATER HIGHLIGHT FLOW
+========================= */
+
+@keyframes waterHighlightFlow {
+  0% {
+    transform: translateY(-35px);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: translateY(110px);
+    opacity: 0;
+  }
+}
