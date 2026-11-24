@@ -219,3 +219,29 @@
   left: 25px;
   animation-delay: 0.9s;
 }
+
+/* =========================
+   WATERFALL HIGHLIGHTS
+========================= */
+
+.water-highlight {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  filter: blur(1px);
+  z-index: 2;
+  animation: waterHighlightFlow 1.8s linear infinite;
+}
+
+.highlight-one {
+  left: 7px;
+}
+
+.highlight-two {
+  left: 19px;
+  height: 25px;
+  animation-delay: 0.9s;
+}
